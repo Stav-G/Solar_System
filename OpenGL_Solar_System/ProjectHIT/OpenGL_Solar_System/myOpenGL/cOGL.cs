@@ -19,6 +19,7 @@ namespace OpenGL
         //flag for planet
         public int intOptionP = 1;
         GLUquadric obj;
+       
 
         public cOGL(Control pb)
         {
