@@ -27,3 +27,13 @@ C:\Users\Stav\Downloads\ProjectHIT\ProjectHIT\OpenGL_Solar_System\myOpenGL\obj\D
 C:\Users\Stav\Downloads\ProjectHIT\ProjectHIT\OpenGL_Solar_System\myOpenGL\obj\Debug\myOpenGL.csproj.CoreCompileInputs.cache
 C:\Users\Stav\Downloads\ProjectHIT\ProjectHIT\OpenGL_Solar_System\myOpenGL\obj\Debug\myOpenGL.exe
 C:\Users\Stav\Downloads\ProjectHIT\ProjectHIT\OpenGL_Solar_System\myOpenGL\obj\Debug\myOpenGL.pdb
+C:\Users\Stav\Desktop\Solar_System\OpenGL_Solar_System\ProjectHIT\OpenGL_Solar_System\myOpenGL\bin\Debug\myOpenGL.exe.config
+C:\Users\Stav\Desktop\Solar_System\OpenGL_Solar_System\ProjectHIT\OpenGL_Solar_System\myOpenGL\bin\Debug\myOpenGL.exe
+C:\Users\Stav\Desktop\Solar_System\OpenGL_Solar_System\ProjectHIT\OpenGL_Solar_System\myOpenGL\bin\Debug\myOpenGL.pdb
+C:\Users\Stav\Desktop\Solar_System\OpenGL_Solar_System\ProjectHIT\OpenGL_Solar_System\myOpenGL\obj\Debug\myOpenGL.csproj.AssemblyReference.cache
+C:\Users\Stav\Desktop\Solar_System\OpenGL_Solar_System\ProjectHIT\OpenGL_Solar_System\myOpenGL\obj\Debug\myOpenGL.Form1.resources
+C:\Users\Stav\Desktop\Solar_System\OpenGL_Solar_System\ProjectHIT\OpenGL_Solar_System\myOpenGL\obj\Debug\myOpenGL.Properties.Resources.resources
+C:\Users\Stav\Desktop\Solar_System\OpenGL_Solar_System\ProjectHIT\OpenGL_Solar_System\myOpenGL\obj\Debug\myOpenGL.csproj.GenerateResource.cache
+C:\Users\Stav\Desktop\Solar_System\OpenGL_Solar_System\ProjectHIT\OpenGL_Solar_System\myOpenGL\obj\Debug\myOpenGL.csproj.CoreCompileInputs.cache
+C:\Users\Stav\Desktop\Solar_System\OpenGL_Solar_System\ProjectHIT\OpenGL_Solar_System\myOpenGL\obj\Debug\myOpenGL.exe
+C:\Users\Stav\Desktop\Solar_System\OpenGL_Solar_System\ProjectHIT\OpenGL_Solar_System\myOpenGL\obj\Debug\myOpenGL.pdb

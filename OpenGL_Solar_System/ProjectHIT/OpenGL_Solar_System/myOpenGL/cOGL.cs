@@ -535,6 +535,27 @@ namespace OpenGL
                         case 2:
                             GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
                             break;
+                        case 3:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
+                            break;
+                        case 4:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
+                            break;
+                        case 5:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
+                            break;
+                        case 6:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
+                            break;
+                        case 7:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
+                            break;
+                        case 8:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
+                            break;
+                        case 9:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
+                            break;
 
                     }
 
@@ -563,6 +584,27 @@ namespace OpenGL
                             break;
                         case 2:
                             GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
+                            break;
+                        case 3:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
+                            break;
+                        case 4:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
+                            break;
+                        case 5:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
+                            break;
+                        case 6:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
+                            break;
+                        case 7:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
+                            break;
+                        case 8:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
+                            break;
+                        case 9:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
                             break;
 
                     }
@@ -604,6 +646,27 @@ namespace OpenGL
                         case 2:
                             GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
                             break;
+                        case 3:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
+                            break;
+                        case 4:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
+                            break;
+                        case 5:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
+                            break;
+                        case 6:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
+                            break;
+                        case 7:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
+                            break;
+                        case 8:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
+                            break;
+                        case 9:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
+                            break;
 
                     }
 
@@ -620,7 +683,7 @@ namespace OpenGL
                     //DrawFigures();
                     //REFLECTION e    
 
-                    DrawAxes();
+                    //DrawAxes();
                     GL.glFlush();
 
                     WGL.wglSwapBuffers(m_uint_DC);
@@ -687,6 +750,27 @@ namespace OpenGL
                         case 2:
                             GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
                             break;
+                        case 3:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
+                            break;
+                        case 4:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
+                            break;
+                        case 5:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
+                            break;
+                        case 6:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
+                            break;
+                        case 7:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
+                            break;
+                        case 8:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
+                            break;
+                        case 9:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
+                            break;
 
                     }
 
@@ -726,6 +810,27 @@ namespace OpenGL
                             break;
                         case 2:
                             GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
+                            break;
+                        case 3:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
+                            break;
+                        case 4:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
+                            break;
+                        case 5:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
+                            break;
+                        case 6:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
+                            break;
+                        case 7:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
+                            break;
+                        case 8:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
+                            break;
+                        case 9:
+                            GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
                             break;
 
                     }
@@ -960,61 +1065,17 @@ namespace OpenGL
 
         }
         //! TEXTURE b
-        public uint[] Textures = new uint[2];
-        //public uint[] textureId = new uint[1];
-        // public uint[] textureId = new uint[1];
-
+        public uint[] Textures = new uint[9];
+       
         void GenerateTextures()
         {
-            /*
-            // GL.glGenTextures(1, Textures);
-
             
-            // string[] imagesName = { "moon" };
-            //for (int i = 0; i < 1; i++)
-            //{
-            //    Bitmap image = new Bitmap(imagesName[i]);
-            //    image.RotateFlip(RotateFlipType.RotateNoneFlipY); //Y axis in Windows is directed downwards, while in OpenGL-upwards
-            //    System.Drawing.Imaging.BitmapData bitmapdata;
-            //    Rectangle rect = new Rectangle(0, 0, image.Width, image.Height);
+            GL.glGenTextures(9, Textures);
 
-            //    bitmapdata = image.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            string[] imagesName = { "earth.bmp", "moon.bmp" ,"sun.bmp" , "mercury.bmp", "venus.bmp" 
+                    , "mars.bmp" , "jupiter.bmp" , "uranus.bmp" , "saturn.bmp"};
 
-            //    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[i]);
-            //    //2D for XYZ
-            //    //The level-of-detail number. Level 0 is the base image level
-            //    //The number of color components in the texture. 
-            //    //Must be 1, 2, 3, or 4, or one of the following 
-            //    //    symbolic constants: 
-            //    //                GL_ALPHA, GL_ALPHA4, 
-            //    //                GL_ALPHA8, GL_ALPHA12, GL_ALPHA16, GL_LUMINANCE, GL_LUMINANCE4, 
-            //    //                GL_LUMINANCE8, GL_LUMINANCE12, GL_LUMINANCE16, GL_LUMINANCE_ALPHA, 
-            //    //                GL_LUMINANCE4_ALPHA4, GL_LUMINANCE6_ALPHA2, GL_LUMINANCE8_ALPHA8, 
-            //    //                GL_LUMINANCE12_ALPHA4, GL_LUMINANCE12_ALPHA12, GL_LUMINANCE16_ALPHA16, 
-            //    //                GL_INTENSITY, GL_INTENSITY4, GL_INTENSITY8, GL_INTENSITY12, 
-            //    //                GL_INTENSITY16, GL_R3_G3_B2, GL_RGB, GL_RGB4, GL_RGB5, GL_RGB8, 
-            //    //                GL_RGB10, GL_RGB12, GL_RGB16, GL_RGBA, GL_RGBA2, GL_RGBA4, GL_RGB5_A1, 
-            //    //                GL_RGBA8, GL_RGB10_A2, GL_RGBA12, or GL_RGBA16.
-
-
-            //    GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, (int)GL.GL_RGB8, image.Width, image.Height,
-            //                                                  //The width of the border. Must be either 0 or 1.
-            //                                                  //The format of the pixel data
-            //                                                  //The data type of the pixel data
-            //                                                  //A pointer to the image data in memory
-            //                                                  0, GL.GL_BGR_EXT, GL.GL_UNSIGNED_byte, bitmapdata.Scan0);
-            //    GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, (int)GL.GL_LINEAR);
-            //    GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, (int)GL.GL_LINEAR);
-
-            //    image.UnlockBits(bitmapdata);
-            //    image.Dispose();
-            */
-            GL.glGenTextures(2, Textures);
-            string[] imagesName = { "earth.bmp", "moon.bmp" };
-
-            //string[] imagesName = { "moon.bmp"};
-
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i <  9 ; i++)
             {
                 Bitmap image = new Bitmap(imagesName[i]);
                 image.RotateFlip(RotateFlipType.RotateNoneFlipY); //Y axis in Windows is directed downwards, while in OpenGL-upwards

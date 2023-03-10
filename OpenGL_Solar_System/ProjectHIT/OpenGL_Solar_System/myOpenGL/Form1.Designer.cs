@@ -6,7 +6,8 @@ namespace myOpenGL
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
+        public int pointY = 50;
+        public int pointPlanetY = 500;
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -67,6 +68,13 @@ namespace myOpenGL
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.radioButton6 = new System.Windows.Forms.RadioButton();
+            this.radioButton7 = new System.Windows.Forms.RadioButton();
+            this.radioButton8 = new System.Windows.Forms.RadioButton();
+            this.radioButton9 = new System.Windows.Forms.RadioButton();
+            this.radioButton10 = new System.Windows.Forms.RadioButton();
+            this.radioButton11 = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -85,99 +93,110 @@ namespace myOpenGL
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.panel1.Location = new System.Drawing.Point(12, 16);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(515, 500);
+            this.panel1.Size = new System.Drawing.Size(800, 600);//515, 500
             this.panel1.TabIndex = 6;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.Resize += new System.EventHandler(this.panel1_Resize);
             // 
             // hScrollBar1
             // 
-            this.hScrollBar1.Location = new System.Drawing.Point(550, 16);
+            this.hScrollBar1.Location = new System.Drawing.Point(850, pointY);
             this.hScrollBar1.Maximum = 200;
             this.hScrollBar1.Name = "hScrollBar1";
             this.hScrollBar1.Size = new System.Drawing.Size(119, 17);
             this.hScrollBar1.TabIndex = 7;
             this.hScrollBar1.Value = 110;
             this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
+           // System.Console.WriteLine(this.hScrollBar1.Location);
+            pointY += 20;
             // 
             // hScrollBar2
             // 
-            this.hScrollBar2.Location = new System.Drawing.Point(550, 37);
+            this.hScrollBar2.Location = new System.Drawing.Point(850, pointY); //(550, 37)
             this.hScrollBar2.Maximum = 200;
             this.hScrollBar2.Name = "hScrollBar2";
             this.hScrollBar2.Size = new System.Drawing.Size(119, 17);
             this.hScrollBar2.TabIndex = 8;
             this.hScrollBar2.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
+            //System.Console.WriteLine(this.hScrollBar2.Location);
+            pointY += 20;
             // 
             // hScrollBar3
             // 
-            this.hScrollBar3.Location = new System.Drawing.Point(550, 58);
+            this.hScrollBar3.Location = new System.Drawing.Point(850, pointY);
             this.hScrollBar3.Maximum = 200;
             this.hScrollBar3.Name = "hScrollBar3";
             this.hScrollBar3.Size = new System.Drawing.Size(119, 17);
             this.hScrollBar3.TabIndex = 9;
             this.hScrollBar3.Value = 200;
             this.hScrollBar3.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
+            pointY += 20;
             // 
             // hScrollBar4
             // 
-            this.hScrollBar4.Location = new System.Drawing.Point(550, 88);
+            this.hScrollBar4.Location = new System.Drawing.Point(850, pointY);
             this.hScrollBar4.Maximum = 200;
             this.hScrollBar4.Name = "hScrollBar4";
             this.hScrollBar4.Size = new System.Drawing.Size(119, 17);
             this.hScrollBar4.TabIndex = 10;
             this.hScrollBar4.Value = 100;
             this.hScrollBar4.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
+            pointY += 20;
             // 
             // hScrollBar5
             // 
-            this.hScrollBar5.Location = new System.Drawing.Point(550, 110);
+            this.hScrollBar5.Location = new System.Drawing.Point(850, pointY);
             this.hScrollBar5.Maximum = 200;
             this.hScrollBar5.Name = "hScrollBar5";
             this.hScrollBar5.Size = new System.Drawing.Size(119, 17);
             this.hScrollBar5.TabIndex = 8;
             this.hScrollBar5.Value = 100;
             this.hScrollBar5.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
+            pointY += 20;
             // 
             // hScrollBar6
             // 
-            this.hScrollBar6.Location = new System.Drawing.Point(550, 132);
+            this.hScrollBar6.Location = new System.Drawing.Point(850, pointY);
             this.hScrollBar6.Maximum = 200;
             this.hScrollBar6.Name = "hScrollBar6";
             this.hScrollBar6.Size = new System.Drawing.Size(119, 17);
             this.hScrollBar6.TabIndex = 11;
             this.hScrollBar6.Value = 100;
             this.hScrollBar6.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
+            pointY += 20;
             // 
             // hScrollBar9
             // 
-            this.hScrollBar9.Location = new System.Drawing.Point(549, 208);
+            this.hScrollBar9.Location = new System.Drawing.Point(850, pointY);
             this.hScrollBar9.Maximum = 200;
             this.hScrollBar9.Name = "hScrollBar9";
             this.hScrollBar9.Size = new System.Drawing.Size(119, 17);
             this.hScrollBar9.TabIndex = 14;
             this.hScrollBar9.Value = 100;
             this.hScrollBar9.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
+            pointY += 20;
             // 
             // hScrollBar8
             // 
-            this.hScrollBar8.Location = new System.Drawing.Point(550, 186);
+            this.hScrollBar8.Location = new System.Drawing.Point(850, pointY);
             this.hScrollBar8.Maximum = 200;
             this.hScrollBar8.Name = "hScrollBar8";
             this.hScrollBar8.Size = new System.Drawing.Size(119, 17);
             this.hScrollBar8.TabIndex = 12;
             this.hScrollBar8.Value = 110;
             this.hScrollBar8.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
+            pointY += 20;
             // 
             // hScrollBar7
             // 
-            this.hScrollBar7.Location = new System.Drawing.Point(550, 164);
+            this.hScrollBar7.Location = new System.Drawing.Point(850, pointY);
             this.hScrollBar7.Maximum = 200;
             this.hScrollBar7.Name = "hScrollBar7";
             this.hScrollBar7.Size = new System.Drawing.Size(119, 17);
             this.hScrollBar7.TabIndex = 13;
             this.hScrollBar7.Value = 100;
             this.hScrollBar7.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
+            pointY += 20;
             // 
             // groupBox1
             // 
@@ -187,7 +206,7 @@ namespace myOpenGL
             this.groupBox1.Controls.Add(this.numericUpDown3);
             this.groupBox1.Controls.Add(this.numericUpDown2);
             this.groupBox1.Controls.Add(this.numericUpDown1);
-            this.groupBox1.Location = new System.Drawing.Point(549, 210);//(549, 245)
+            this.groupBox1.Location = new System.Drawing.Point(850, 210);//(549, 245)
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(118, 66);
             this.groupBox1.TabIndex = 15;
@@ -283,7 +302,7 @@ namespace myOpenGL
             this.groupBox2.Controls.Add(this.numericUpDown4);
             this.groupBox2.Controls.Add(this.numericUpDown5);
             this.groupBox2.Controls.Add(this.numericUpDown6);
-            this.groupBox2.Location = new System.Drawing.Point(549, 275);//(549, 327)
+            this.groupBox2.Location = new System.Drawing.Point(850, 275);//(549, 327)
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(118, 66);
             this.groupBox2.TabIndex = 16;
@@ -382,7 +401,7 @@ namespace myOpenGL
             this.checkBox1.AutoSize = true;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(563, 407);//(563, 399);
+            this.checkBox1.Location = new System.Drawing.Point(850, 407);//(563, 399);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(40, 5);
             this.checkBox1.TabIndex = 23;
@@ -393,7 +412,7 @@ namespace myOpenGL
             // 
             // hScrollBar13
             // 
-            this.hScrollBar13.Location = new System.Drawing.Point(533, 476);
+            this.hScrollBar13.Location = new System.Drawing.Point(850, 476);
             this.hScrollBar13.Maximum = 200;
             this.hScrollBar13.Name = "hScrollBar13";
             this.hScrollBar13.Size = new System.Drawing.Size(143, 17);
@@ -403,7 +422,7 @@ namespace myOpenGL
             // 
             // hScrollBar11
             // 
-            this.hScrollBar11.Location = new System.Drawing.Point(533, 426);
+            this.hScrollBar11.Location = new System.Drawing.Point(850, 426);
             this.hScrollBar11.Maximum = 200;
             this.hScrollBar11.Name = "hScrollBar11";
             this.hScrollBar11.Size = new System.Drawing.Size(143, 17);
@@ -413,7 +432,7 @@ namespace myOpenGL
             // 
             // hScrollBar12
             // 
-            this.hScrollBar12.Location = new System.Drawing.Point(533, 452);
+            this.hScrollBar12.Location = new System.Drawing.Point(850, 452);
             this.hScrollBar12.Maximum = 200;
             this.hScrollBar12.Name = "hScrollBar12";
             this.hScrollBar12.Size = new System.Drawing.Size(143, 17);
@@ -426,7 +445,7 @@ namespace myOpenGL
             this.checkBox2.AutoSize = true;
             this.checkBox2.Checked = true;
             this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox2.Location = new System.Drawing.Point(563, 350);
+            this.checkBox2.Location = new System.Drawing.Point(850, 350);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(86, 17);
             this.checkBox2.TabIndex = 27;
@@ -444,7 +463,7 @@ namespace myOpenGL
             // 
             this.radioButton1.AutoSize = true;
             this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(563, 385);
+            this.radioButton1.Location = new System.Drawing.Point(850, 385);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(39, 16);
             this.radioButton1.TabIndex = 28;
@@ -456,7 +475,7 @@ namespace myOpenGL
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(563, 370);
+            this.radioButton2.Location = new System.Drawing.Point(850, 370);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(60, 17);
             this.radioButton2.TabIndex = 29;
@@ -469,7 +488,7 @@ namespace myOpenGL
             // 
             this.radioButton1.AutoSize = true;
             this.radioButton1.Checked = true;
-            this.radioButton3.Location = new System.Drawing.Point(563, 340);
+            this.radioButton3.Location = new System.Drawing.Point(850, pointPlanetY);
             this.radioButton3.Name = "radioButton1";
             this.radioButton3.Size = new System.Drawing.Size(60, 17);
             this.radioButton3.TabIndex = 33;
@@ -477,11 +496,12 @@ namespace myOpenGL
             this.radioButton3.Text = "Earth";
             this.radioButton3.UseVisualStyleBackColor = true;
             this.radioButton3.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            pointPlanetY += 20;
             // 
             // radioButton4
             // 
             this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(563, 355);
+            this.radioButton4.Location = new System.Drawing.Point(850, pointPlanetY);
             this.radioButton4.Name = "radioButton2";
             this.radioButton4.Size = new System.Drawing.Size(60, 17);
             this.radioButton4.TabIndex = 34;
@@ -489,6 +509,98 @@ namespace myOpenGL
             this.radioButton4.Text = "Moon";
             this.radioButton4.UseVisualStyleBackColor = true;
             this.radioButton4.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            pointPlanetY += 20;
+            // 
+            // radioButton5
+            // 
+            this.radioButton5.AutoSize = true;
+            this.radioButton5.Location = new System.Drawing.Point(850, pointPlanetY);
+            this.radioButton5.Name = "radioButton3";
+            this.radioButton5.Size = new System.Drawing.Size(60, 17);
+            this.radioButton5.TabIndex = 35;
+            this.radioButton5.TabStop = true;
+            this.radioButton5.Text = "Sun";
+            this.radioButton5.UseVisualStyleBackColor = true;
+            this.radioButton5.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            pointPlanetY += 20;
+            // 
+            // radioButton6
+            // 
+            this.radioButton6.UseVisualStyleBackColor = true;
+            this.radioButton6.AutoSize = true;
+            this.radioButton6.Location = new System.Drawing.Point(850, pointPlanetY);
+            this.radioButton6.Name = "radioButton4";
+            this.radioButton6.Size = new System.Drawing.Size(60, 17);
+            this.radioButton6.TabIndex = 36;
+            this.radioButton6.TabStop = true;
+            this.radioButton6.Text = "Mercury";
+            this.radioButton6.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            pointPlanetY += 20;
+            // 
+            // radioButton7
+            // 
+            this.radioButton7.UseVisualStyleBackColor = true;
+            this.radioButton7.AutoSize = true;
+            this.radioButton7.Location = new System.Drawing.Point(850, pointPlanetY);
+            this.radioButton7.Name = "radioButton5";
+            this.radioButton7.Size = new System.Drawing.Size(60, 17);
+            this.radioButton7.TabIndex = 37;
+            this.radioButton7.TabStop = true;
+            this.radioButton7.Text = "Venus";
+            this.radioButton7.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            pointPlanetY += 20;
+            // 
+            // radioButton8
+            // 
+            this.radioButton8.UseVisualStyleBackColor = true;
+            this.radioButton8.AutoSize = true;
+            this.radioButton8.Location = new System.Drawing.Point(850, pointPlanetY);
+            this.radioButton8.Name = "radioButton6";
+            this.radioButton8.Size = new System.Drawing.Size(60, 17);
+            this.radioButton8.TabIndex = 38;
+            this.radioButton8.TabStop = true;
+            this.radioButton8.Text = "Mars";
+            this.radioButton8.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            pointPlanetY += 20;
+            // 
+            // radioButton9
+            // 
+            this.radioButton9.UseVisualStyleBackColor = true;
+            this.radioButton9.AutoSize = true;
+            this.radioButton9.Location = new System.Drawing.Point(910, 500);
+            this.radioButton9.Name = "radioButton7";
+            this.radioButton9.Size = new System.Drawing.Size(60, 17);
+            this.radioButton9.TabIndex = 39;
+            this.radioButton9.TabStop = true;
+            this.radioButton9.Text = "Jupiter";
+            this.radioButton9.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            pointPlanetY += 20;
+            // 
+            // radioButton10
+            // 
+            this.radioButton10.UseVisualStyleBackColor = true;
+            this.radioButton10.AutoSize = true;
+            this.radioButton10.Location = new System.Drawing.Point(910, 520);
+            this.radioButton10.Name = "radioButton8";
+            this.radioButton10.Size = new System.Drawing.Size(60, 17);
+            this.radioButton10.TabIndex = 40;
+            this.radioButton10.TabStop = true;
+            this.radioButton10.Text = "Uranus";
+            this.radioButton10.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            pointPlanetY += 20;
+            // 
+            // radioButton11
+            // 
+            this.radioButton8.UseVisualStyleBackColor = true;
+            this.radioButton8.AutoSize = true;
+            this.radioButton8.Location = new System.Drawing.Point(910, 540);
+            this.radioButton8.Name = "radioButton9";
+            this.radioButton8.Size = new System.Drawing.Size(60, 17);
+            this.radioButton8.TabIndex = 41;
+            this.radioButton8.TabStop = true;
+            this.radioButton8.Text = "Saturn";
+            this.radioButton8.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            pointPlanetY += 20;
             //
             // groupBox3
             // 
@@ -496,7 +608,7 @@ namespace myOpenGL
             this.groupBox3.Controls.Add(this.label7);
             this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.radioButton2);
-            this.groupBox3.Location = new System.Drawing.Point(549, 340);//(549, 245)
+            this.groupBox3.Location = new System.Drawing.Point(850, 340);//(549, 245)
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(118, 66);
             this.groupBox3.TabIndex = 30;
@@ -506,7 +618,7 @@ namespace myOpenGL
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(549, 300);
+            this.label7.Location = new System.Drawing.Point(850, 300);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(12, 13);
             this.label7.TabIndex = 31;
@@ -515,7 +627,7 @@ namespace myOpenGL
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(549, 300);
+            this.label8.Location = new System.Drawing.Point(850, 300);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(12, 13);
             this.label8.TabIndex = 32;
@@ -525,7 +637,7 @@ namespace myOpenGL
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(685, 528);
+            this.ClientSize = new System.Drawing.Size(1000, 850);//(685, 528)
             this.Controls.Add(this.hScrollBar12);
             this.Controls.Add(this.hScrollBar11);
             this.Controls.Add(this.hScrollBar13);
@@ -547,6 +659,13 @@ namespace myOpenGL
             this.Controls.Add(this.radioButton2);
             this.Controls.Add(this.radioButton3);
             this.Controls.Add(this.radioButton4);
+            this.Controls.Add(this.radioButton5);
+            this.Controls.Add(this.radioButton6);
+            this.Controls.Add(this.radioButton7);
+            this.Controls.Add(this.radioButton8);
+            this.Controls.Add(this.radioButton9);
+            this.Controls.Add(this.radioButton10);
+            this.Controls.Add(this.radioButton11);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -612,6 +731,13 @@ namespace myOpenGL
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.RadioButton radioButton4;
+        private System.Windows.Forms.RadioButton radioButton5;
+        private System.Windows.Forms.RadioButton radioButton6;
+        private System.Windows.Forms.RadioButton radioButton7;
+        private System.Windows.Forms.RadioButton radioButton8;
+        private System.Windows.Forms.RadioButton radioButton9;
+        private System.Windows.Forms.RadioButton radioButton10;
+        private System.Windows.Forms.RadioButton radioButton11;
     }
 }
 
