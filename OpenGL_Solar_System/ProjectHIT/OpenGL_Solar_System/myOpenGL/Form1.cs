@@ -161,7 +161,8 @@ namespace myOpenGL
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            timer2.Enabled = !timer2.Enabled;
+            cGL.isReflection = !cGL.isReflection;
+            cGL.Draw();
         }
 
         private void radioButton_CheckedChanged(object sender, EventArgs e)
@@ -177,6 +178,11 @@ namespace myOpenGL
             cGL.Draw();
         }
 
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            cGL.isShadow = !cGL.isShadow;
+            cGL.Draw();
+        }
 
     }
 }
