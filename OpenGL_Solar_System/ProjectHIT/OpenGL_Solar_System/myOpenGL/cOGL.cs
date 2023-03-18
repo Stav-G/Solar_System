@@ -18,23 +18,10 @@ namespace OpenGL
         public int intOptionM = 1;
         //flag for planet
         public int intOptionP = 1;
+
+        public int moviendo;
      
         GLUquadric obj;
-
-
-        public struct Position
-        {
-            public float x;
-            public float y;
-            public float z;
-
-            public Position(int x, int y, int z)
-            {
-                this.x = x;
-                this.y = y;
-                this.z = z;
-            }
-        }
 
         public cOGL(Control pb)
         {
@@ -64,6 +51,7 @@ namespace OpenGL
             isReflection = false;
             isLight = false;
             isFloor = false;
+            isOrbit = false;
 
             angelOrbitMercury = r.Next(360);
             speedOrbitMercury = (float)r.NextDouble() * 0.3f;
@@ -276,14 +264,162 @@ namespace OpenGL
         public bool isReflection = false;
         public bool isLight = false;
         public bool isFloor = false;
+        public bool isOrbit = false;
         public float rotacion = 0;
         public float rotacionP = 0;
         public float objy = 0.0f;
-        
-        
-        void DrawFigures_2()
+
+
+        /**************************************/
+      //  #region Camera constants
+
+        const double div1 = Math.PI / 180;
+        const double div2 = 180 / Math.PI;
+
+      //  #endregion
+
+     //   #region Private atributes
+
+        static float eyex, eyey, eyez;
+        static float centerx, centery, centerz;
+        static float forwardSpeed = 0.3f;
+        static float yaw, pitch;
+        static float rotationSpeed = 0.25f;
+        static double i, j, k;
+
+
+        // #endregion
+        /**************************************/
+
+
+        public void Update(int pressedButton)
+        {
+            // #region Aim camera
+            Point position = new Point();
+            //  Cursor.Position
+            //Winapi.GetCursorPos(ref position);
+            // Cursor.Position = 
+
+            int difX = panelPosX + 512 - position.X;
+            int difY = panelPosY + 384 - position.Y;
+
+            if (position.Y < 384)
+            {
+                pitch -= rotationSpeed * difY;
+            }
+            else
+                if (position.Y > 384)
+            {
+                pitch += rotationSpeed * -difY;
+            }
+            if (position.X < 512)
+            {
+                yaw += rotationSpeed * -difX;
+            }
+            else
+                if (position.X > 512)
+            {
+                yaw -= rotationSpeed * difX;
+            }
+            UpdateDirVector();
+            CenterMouse();
+
+
+            if (pressedButton == 1) //the left mouse button was pressed
+            {
+                eyex -= (float)i * forwardSpeed;
+                eyey -= (float)j * forwardSpeed;
+                eyez -= (float)k * forwardSpeed;
+            }
+            else
+                if (pressedButton == -1) // the right mouse button was pressed
+            {
+                eyex += (float)i * forwardSpeed;
+                eyey += (float)j * forwardSpeed;
+                eyez += (float)k * forwardSpeed;
+            }
+
+            // #endregion
+
+            Look();
+        }
+
+        static public float AnguloARadian(double pAngle)
+        {
+            return (float)(pAngle * div1);
+        }
+
+        static public float RadianAAngulo(double pAngle)
+        {
+            return (float)(pAngle * div2);
+        }
+        public void UpdateDirVector()
+        {
+            k = Math.Cos(AnguloARadian((double)yaw)); //z-axis
+            i = -Math.Sin(AnguloARadian((double)yaw)); // x-axis
+            j = Math.Sin(AnguloARadian((double)pitch)); // y-axis     
+
+            centerz = eyez - (float)k; // Calculate where the camera is looking
+            centerx = eyex - (float)i;
+            centery = eyey - (float)j;
+        }
+
+        //public static void CenterMouse()
+        //{
+        //    int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+        //    int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+        //    Cursor.Position = new Point(screenWidth / 2, screenHeight / 2);
+        //}
+
+        public void CenterMouse()
         {
 
+            this.panelPosX = 500;
+            this.panelPosY = 500;
+            //this.pointX = 512;            
+            //this.panelPosX = 384;
+
+            //pointX = panelPosX + 512;
+            //pointY = panelPosY + 384;
+
+        }
+
+        public static float Pitch
+        {
+            get { return pitch; }
+            set { pitch = value; }
+        }
+
+        public static float Yaw
+        {
+            get { return yaw; }
+            set { yaw = value; }
+        }
+
+        public void InitCamara()
+        {
+            eyex = 0f;
+            eyey = 2f;
+            eyez = 5f;
+            centerx = 0;
+            centery = 2;
+            centerz = 0;
+            Look();
+        }
+
+        public void Look()
+        {
+            GL.glMatrixMode(GL.GL_MODELVIEW);
+            GL.glLoadIdentity();
+            GLU.gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, 0, 1, 0);
+        }
+
+        /**************************************/
+
+
+        void DrawFigures_2()
+        {
+            
             int i;
             //!!!!!!!!!!!!!
             GL.glPushMatrix();
@@ -347,111 +483,17 @@ namespace OpenGL
         void DrawEachPlane(Boolean isForShades)
         {
 
+            DrawMyPlanet(2, 3.0f, posXSun, posYSun,posZSun,isForShades);// sun
+            DrawMyPlanet(3, 0.5f, posXMercury, posYMercury,posZMercury,isForShades); // mercury
+            DrawMyPlanet(4, 0.7f, posXVenus,posYVenus,posZVenus, isForShades);// venus
+            DrawMyPlanet(0, 1.0f, posXEarth,posYEarth,posZEarth, isForShades);// earth
+            DrawMyPlanet(1, 0.5f, posXMoon,posYMoon,posZMoon ,isForShades);// moon
+            DrawMyPlanet(5, 1.0f, posXMars,posYMars, posZMars,isForShades);// mars
+            DrawMyPlanet(6, 1.5f, posXJupiter,posYJupiter, posZJupiter,isForShades);// jupiter
+            DrawMyPlanet(7, 1.2f, posXUranus,posYUranus, posZUranus,isForShades);// uranus
+            DrawMyPlanet(8, 1.2f, posXSaturn,posYSaturn,posZSaturn ,isForShades);// saturn
+            DrawMyPlanet(9, 1.2f, posXNeptun,posYNeptun,posZNeptun ,isForShades);// neptune
 
-            //  GL.glPushMatrix();
-
-            //   GL.glRotated(intOptionB, 0, 0, 1); //rotate both
-
-            // GL.glEnable(GL.GL_TEXTURE_2D);
-
-            //drawmyplanet(2, 3.0f, new position(0 , 0 , 0), isforshades);// sun
-            //drawmyplanet(3, 0.5f, new position(5 , 0 , 0), isforshades); // mercury
-            //drawmyplanet(4, 0.7f, new position(11 , 0 , 0), isforshades);// venus
-            //drawmyplanet(0, 1.0f, new position(15 , 0 , 0), isforshades);// earth
-            //drawmyplanet(1, 0.5f, new position(15 , 0 , 0), isforshades);// moon
-            //drawmyplanet(5, 1.0f, new position(22 , 0 , 0), isforshades);// mars
-            //drawmyplanet(6, 1.5f, new position(28 , 0 , 0), isforshades);// jupiter
-            //drawmyplanet(7, 1.2f, new position(35 , 0 , 0), isforshades);// uranus
-            //drawmyplanet(8, 1.2f, new position(41 , 0 , 0), isforshades);// saturn
-            //drawmyplanet(9, 1.2f, new position(51 , 0 , 0), isforshades);// neptune
-
-
-            //DrawMyPlanet(2, 3.0f, 0, isForShades,0,0);// sun
-            //DrawMyPlanet(3, 0.5f, 5, isForShades,speedOrbitMercury,angelOrbitMercury); // mercury
-            //angelOrbitMercury += speedOrbitMercury;
-            //angelOrbitMercury += 0.6f;
-            //DrawMyPlanet(4, 0.7f, 11, isForShades,speedOrbitVenus,angelOrbitVenus);// venus
-            //angelOrbitVenus += speedOrbitVenus;
-            //angelOrbitVenus += 0.6f;
-            //DrawMyPlanet(0, 1.0f, 15, isForShades,speedOrbitEarth, angelOrbitEarth);// earth
-            //angelOrbitEarth += speedOrbitEarth;
-            //angelOrbitEarth += 0.6f;
-            //DrawMyPlanet(1, 0.5f, 15, isForShades, speedOrbitEarth, angelOrbitEarth);// moon
-            //angelOrbitEarth += speedOrbitEarth;
-            //angelOrbitEarth += 0.6f;
-            //DrawMyPlanet(5, 1.0f, 22, isForShades,speedOrbitMars, angelOrbitMars);// mars
-            //angelOrbitMars += speedOrbitMars;
-            //angelOrbitMars += 0.6f;
-            //DrawMyPlanet(6, 1.5f, 28, isForShades,speedOrbitJupiter, angelOrbitJupiter);// jupiter
-            //angelOrbitJupiter += speedOrbitJupiter;
-            //angelOrbitJupiter += 0.6f;
-            //DrawMyPlanet(7, 1.2f, 35, isForShades,speedOrbitUranus,angelOrbitUranus);// uranus
-            //angelOrbitUranus += speedOrbitUranus;
-            //angelOrbitUranus += 0.6f;
-            //DrawMyPlanet(8, 1.2f, 41, isForShades,speedOrbitSaturn,angelOrbitSaturn);// saturn
-            //angelOrbitSaturn += speedOrbitSaturn;
-            //angelOrbitSaturn += 0.6f;
-            //DrawMyPlanet(9, 1.2f, 51, isForShades,speedOrbitNeptun, angelOrbitNeptun);// neptune
-            //angelOrbitNeptun += speedOrbitNeptun;
-            //angelOrbitNeptun += 0.6f;
-
-            //   GL.glRotated(intOptionB, 0, 0, 1); //rotate both not neccessary
-
-            //GL.glPushMatrix();
-
-            //  GL.glRotated(intOptionB, 0, 0, 1); //rotate both
-
-            DrawMyPlanet(2, 3.0f, posXSun, posYSun,isForShades);// sun
-            DrawMyPlanet(3, 0.5f, posXMercury, posYMercury,isForShades); // mercury
-            //posXMercury += 0.3f;
-            //posYMercury += 0.2f;
-            DrawMyPlanet(4, 0.7f, posXVenus,posYVenus, isForShades);// venus
-            //posXVenus += 0.9f;
-            //posYVenus += 0.9f;
-            DrawMyPlanet(0, 1.0f, posXEarth,posYEarth, isForShades);// earth
-            //posXEarth += 0.3f;
-            //posYEarth += 0.2f;
-            DrawMyPlanet(1, 0.5f, posXMoon,posYMoon, isForShades);// moon
-            //posXMoon += 0.3f;
-            //posYMoon += 0.2f;
-            DrawMyPlanet(5, 1.0f, posXMars,posYMars, isForShades);// mars
-            //posXMars += 0.3f;
-            //posYMars += 0.2f;
-            DrawMyPlanet(6, 1.5f, posXJupiter,posYJupiter, isForShades);// jupiter
-            //posXJupiter += 0.3f;
-            //posYJupiter += 0.2f;
-            DrawMyPlanet(7, 1.2f, posXUranus,posYUranus, isForShades);// uranus
-            //posXUranus += 0.3f;
-            //posYUranus += 0.2f;
-            DrawMyPlanet(8, 1.2f, posXSaturn,posYSaturn, isForShades);// saturn
-            //posXSaturn += 0.3f;
-            //posYSaturn += 0.2f;
-            DrawMyPlanet(9, 1.2f, posXNeptun,posYNeptun, isForShades);// neptune
-            //posXNeptun += 0.3f;
-            //posYNeptun += 0.2f;
-            //3,
-            //5,
-            //11
-            //15
-            //15
-            //22
-            //28
-            //35
-            //41
-            //51
-            //DrawMyPlanet1(2, 3.0f, 3, isForShades);// sun
-            //DrawMyPlanet1(3, 0.5f, 5, isForShades); // mercury
-            //DrawMyPlanet1(4, 0.7f, 11, isForShades);// venus
-            //DrawMyPlanet1(1, 0.5f, 15, isForShades);// moon
-            //DrawMyPlanet1(0, 1.0f, 15, isForShades);// earth
-            //DrawMyPlanet1(5, 1.0f, 22, isForShades);// mars
-            //DrawMyPlanet1(6, 1.5f, 28, isForShades);// jupiter
-            //DrawMyPlanet1(7, 1.2f, 35, isForShades);// uranus
-            //DrawMyPlanet1(8, 1.2f, 41, isForShades);// saturn
-            //DrawMyPlanet1(9, 1.2f, 51, isForShades);// neptune
-
-            //   GL.glRotated(intOptionB, 0, 0, 1); //rotate both not neccessary
-            // GL.glPopMatrix();
             GL.glDisable(GL.GL_TEXTURE_2D);  
 
             //0 = "earth.bmp", 
@@ -754,10 +796,11 @@ namespace OpenGL
             }
         }
 
-        void DrawMyPlanet(int texture, float radios, float posX,float posY,  Boolean isForShades)
+        void DrawMyPlanet(int texture, float radios, float posX,float posY,float posZ,  Boolean isForShades)
         {
             if (texture != 2)
             {
+               // GL.glPushMatrix();
                 if (isForShades == false)
                 {
                     GL.glEnable(GL.GL_TEXTURE_2D);
@@ -771,16 +814,24 @@ namespace OpenGL
                     GL.glColor3f(0.5f, 0.5f, 0.5f);
                 }
 
-                //GL.glTranslatef(posX, posY, 0);
+                GL.glTranslatef(posX, posY, posZ);
                 GL.glRotated(270, 1, 0, 0);
-                GL.glRotated(intOptionB, 1, 0, 0);
+                
+               // GL.glRotated(intOptionB, 1, 0, 0);
                 GLU.gluSphere(obj, radios, 32, 32);
-                GL.glTranslatef(-posX, -posY, 0);
-                GL.glRotated(intOptionB, 1, 0, 0);
+                GL.glTranslatef(-posX, -posY, -posZ);
+                // GL.glRotated(intOptionB, 1, 0, 0);
+
+                if (isOrbit)
+                {
+                    DrawOrbit(posX);
+                }
+                //
+                //GL.glPopMatrix();
             }
             else
             {
-
+             //   GL.glPushMatrix();
                 if (isLight)
                 {
                     GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, pos);
@@ -804,12 +855,13 @@ namespace OpenGL
                 }
 
 
-                GL.glTranslatef(posX, posY, 0.0f);
+                GL.glTranslatef(posX, posY, posZ);
                 rotacion += 0.05f;
                 GL.glRotatef(rotacion, 0, 0, 1);
                 GLU.gluSphere(obj, radios, 32, 32);
-                GL.glTranslatef(-posX, -posY, 0.0f);
+                GL.glTranslatef(-posX, -posY, -posZ);
 
+                //GL.glPopMatrix();
             }
         }
 
@@ -954,6 +1006,7 @@ namespace OpenGL
 
         public void DrawOrbit(float x)
         {
+
             GL.glBegin(GL.GL_LINE_STRIP);
 
             for (int i = 0; i < 361; i++)
@@ -981,6 +1034,8 @@ namespace OpenGL
         public Boolean intOptionMi = false;
         double[] AccumulatedRotationsTraslations = new double[16];
 
+        public int panelPosX;
+        public int panelPosY;
 
         public float angelRotation;
         public float angelOrbit;
@@ -1019,7 +1074,7 @@ namespace OpenGL
         //51
         //X
         public float posXSun = 3;
-        public float posXMercury = 5.0f;
+        public float posXMercury = 5;
         public float posXVenus = 11;
         public float posXEarth = 15;
         public float posXMoon = 15;
@@ -1031,16 +1086,27 @@ namespace OpenGL
         //public float posXPluton;
         //Y
         public float posYSun = 0;
-        public float posYMercury = 0.0f;
-        public float posYVenus = 0;
-        public float posYEarth = 0;
-        public float posYMoon = 0;
-        public float posYMars = 0;
-        public float posYJupiter = 0;
-        public float posYSaturn = 0;
-        public float posYUranus = 0;
-        public float posYNeptun = 0;
-      //  public float posYPluton = 0;
+        public float posYMercury = 5;
+        public float posYVenus = 11;
+        public float posYEarth = 15;
+        public float posYMoon = 15;
+        public float posYMars = 22;
+        public float posYJupiter = 28;
+        public float posYSaturn = 35;
+        public float posYUranus = 41;
+        public float posYNeptun = 51;
+        //  public float posYPluton = 0;
+        //Y
+        public float posZSun = 0;
+        public float posZMercury = 0;
+        public float posZVenus = 0;
+        public float posZEarth = 0;
+        public float posZMoon = 0;
+        public float posZMars = 0;
+        public float posZJupiter = 0;
+        public float posZSaturn = 0;
+        public float posZUranus = 0;
+        public float posZNeptun = 0;
 
 
         public void Draw()
@@ -1113,7 +1179,7 @@ namespace OpenGL
                 }
             }
 
-
+          
             //as result - the ModelView Matrix now is pure representation
             //of KeyCode transform and only it !!!
 
@@ -1182,7 +1248,7 @@ namespace OpenGL
             GL.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 
             GL.glEnable(GL.GL_STENCIL_TEST);
-
+           
             // draw reflected scene
             GL.glPushMatrix();
             GL.glScalef(1, 1, -1); //swap on Z axis

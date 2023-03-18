@@ -6,7 +6,9 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using OpenGL;
-using System.Runtime.InteropServices; 
+using System.Runtime.InteropServices;
+
+
 
 namespace myOpenGL
 {
@@ -14,6 +16,7 @@ namespace myOpenGL
     {
         cOGL cGL;
 
+      
         public Form1()
         {
 
@@ -70,24 +73,24 @@ namespace myOpenGL
                 case 2:
                     if (pos > oldPos[i - 1])
                     {
-                        cGL.yShift += 0.25f;
+                        cGL.yShift += 1.0f;// 0.25f;
                         cGL.intOptionC = 5;
                     }
                     else
                     {
-                        cGL.yShift -= 0.25f;
+                        cGL.yShift -= 1.0f;// 0.25f;
                         cGL.intOptionC = -5;
                     }
                     break;
                 case 3:
                     if (pos > oldPos[i - 1])
                     {
-                        cGL.zShift += 0.25f;
+                        cGL.zShift += 1.0f;// 0.25f;
                         cGL.intOptionC = 6;
                     }
                     else
                     {
-                        cGL.zShift -= 0.25f;
+                        cGL.zShift -= 1.0f;//  0.25f;
                         cGL.intOptionC = -6;
                     }
                     break;
@@ -192,6 +195,66 @@ namespace myOpenGL
         {
             cGL.isFloor = !cGL.isFloor;
             cGL.Draw();
+        } 
+        private void checkBox6_CheckedChanged(object sender, EventArgs e)
+        {
+            cGL.isOrbit = !cGL.isOrbit;
+            cGL.Draw();
+        }
+
+
+        private void pnlViewPort_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                cGL.moviendo = 1;
+                //cGL.Update(cGL.moviendo);
+               // cGL.Draw();
+               
+
+            }
+            else
+            {
+                cGL.moviendo = -1;
+               // cGL.Update(cGL.moviendo);
+                //cGL.Draw();
+               
+            }
+
+        }
+
+        private void pnlViewPort_MouseUp(object sender, MouseEventArgs e)
+        {
+            cGL.moviendo = 0;
+            //cGL.Update(cGL.moviendo);
+           // cGL.Draw();
+        }
+
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            cGL.panelPosX = this.Left;
+            cGL.panelPosY = this.Top;
+           
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {   
+            if (e.KeyCode == Keys.Escape)
+            {
+                cGL.Draw();
+                //this.Close();
+               // Close();//                cGL.Draw();
+            }
+            if (e.KeyCode == Keys.Enter)
+            {
+                MessageBox.Show("Enter key pressed");
+                cGL.Draw();
+                //if (showOrbit == true)
+                //    showOrbit = false;
+                //else
+                //    showOrbit = true;
+            }
         }
     }
 }
