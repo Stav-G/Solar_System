@@ -386,7 +386,18 @@ namespace OpenGL
 		public const uint   GL_STENCIL_FAIL=0x0b94;
 		public const uint   GL_STENCIL_PASS_DEPTH_FAIL=0x0b95;
 		public const uint   GL_STENCIL_PASS_DEPTH_PASS=0x0b96;
-		public const uint   GL_STENCIL_REF=0x0b97;
+
+        internal static void glColorMask(uint gL_FALSE1, uint gL_FALSE2, uint gL_FALSE3, uint gL_FALSE4)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void glDepthMask(uint gL_FALSE)
+        {
+            throw new NotImplementedException();
+        }
+
+        public const uint   GL_STENCIL_REF=0x0b97;
 		public const uint   GL_STENCIL_WRITEMASK=0x0b98;
 		public const uint   GL_MATRIX_MODE=0x0ba0;
 		public const uint   GL_NORMALIZE=0x0ba1;

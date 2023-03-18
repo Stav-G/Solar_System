@@ -145,18 +145,16 @@ namespace myOpenGL
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+           //GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
             cGL.Draw();
+           //WGL.wglSwapBuffers(cGL. m_uint_DC);
+            //GL.glFlush();
+            
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             timer1.Enabled = !timer1.Enabled;
-        }
-
-        private void timer2_Tick(object sender, EventArgs e)
-        {
-            // cGL.Draw();
-            cGL.intOptionMi = !cGL.intOptionMi;
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
@@ -184,5 +182,16 @@ namespace myOpenGL
             cGL.Draw();
         }
 
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            cGL.isLight = !cGL.isLight;
+            cGL.Draw();
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            cGL.isFloor = !cGL.isFloor;
+            cGL.Draw();
+        }
     }
 }

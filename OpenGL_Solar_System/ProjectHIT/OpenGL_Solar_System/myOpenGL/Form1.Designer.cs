@@ -60,11 +60,6 @@ namespace myOpenGL
             this.hScrollBar11 = new System.Windows.Forms.HScrollBar();
             this.hScrollBar12 = new System.Windows.Forms.HScrollBar();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
@@ -75,6 +70,8 @@ namespace myOpenGL
             this.radioButton10 = new System.Windows.Forms.RadioButton();
             this.radioButton11 = new System.Windows.Forms.RadioButton();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -83,9 +80,6 @@ namespace myOpenGL
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
-            
-            //((System.ComponentModel.ISupportInitialize)(this.radioButton1)).BeginInit();
-            //((System.ComponentModel.ISupportInitialize)(this.radioButton2)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -93,7 +87,7 @@ namespace myOpenGL
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.panel1.Location = new System.Drawing.Point(12, 16);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 600);//515, 500
+            this.panel1.Size = new System.Drawing.Size(800,600);// (800, 600);//515, 500
             this.panel1.TabIndex = 6;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.Resize += new System.EventHandler(this.panel1_Resize);
@@ -107,7 +101,6 @@ namespace myOpenGL
             this.hScrollBar1.TabIndex = 7;
             this.hScrollBar1.Value = 110;
             this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
-           // System.Console.WriteLine(this.hScrollBar1.Location);
             pointY += 20;
             // 
             // hScrollBar2
@@ -118,7 +111,6 @@ namespace myOpenGL
             this.hScrollBar2.Size = new System.Drawing.Size(119, 17);
             this.hScrollBar2.TabIndex = 8;
             this.hScrollBar2.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
-            //System.Console.WriteLine(this.hScrollBar2.Location);
             pointY += 20;
             // 
             // hScrollBar3
@@ -434,6 +426,32 @@ namespace myOpenGL
             this.checkBox3.Text = "Shadow";
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Checked = false;
+            this.checkBox4.CheckState = System.Windows.Forms.CheckState.Unchecked;
+            this.checkBox4.Location = new System.Drawing.Point(940, 360);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(58, 17);
+            this.checkBox4.TabIndex = 42;
+            this.checkBox4.Text = "Light";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Checked = false;
+            this.checkBox5.CheckState = System.Windows.Forms.CheckState.Unchecked;
+            this.checkBox5.Location = new System.Drawing.Point(940, 380);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(58, 17);
+            this.checkBox5.TabIndex = 42;
+            this.checkBox5.Text = "Floor";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
 
             // 
             // hScrollBar13
@@ -465,38 +483,6 @@ namespace myOpenGL
             this.hScrollBar12.TabIndex = 26;
             this.hScrollBar12.Value = 80;
             this.hScrollBar12.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
-           
-            // 
-            // timer2
-            // 
-            this.timer2.Enabled = false;// true;
-            this.timer2.Interval = 10;
-            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(850, 385);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(39, 16);
-            this.radioButton1.TabIndex = 28;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Reflection ON";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(850, 370);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(60, 17);
-            this.radioButton2.TabIndex = 29;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Reflection OFF";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
             // 
             // radioButton3
             // 
@@ -615,35 +601,14 @@ namespace myOpenGL
             this.radioButton11.Text = "Saturn";
             this.radioButton11.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             pointPlanetY += 20;
-            
-           
-            //
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(850, 300);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(12, 13);
-            this.label7.TabIndex = 31;
-            this.label7.Text = "Y";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(850, 300);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(12, 13);
-            this.label8.TabIndex = 32;
-            this.label8.Text = "N";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1000, 850);//(685, 528)
+            this.ClientSize = new System.Drawing.Size(1000,1000);//(1000, 850);//(685, 528)
             this.Controls.Add(this.hScrollBar12);
-            this.Controls.Add(this.hScrollBar11);
-            this.Controls.Add(this.hScrollBar13);
+            this.Controls.Add(this.hScrollBar11); 
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -657,8 +622,6 @@ namespace myOpenGL
             this.Controls.Add(this.hScrollBar2);
             this.Controls.Add(this.hScrollBar1);
             this.Controls.Add(this.checkBox2);
-            //this.Controls.Add(this.radioButton1);
-            //this.Controls.Add(this.radioButton2);
             this.Controls.Add(this.radioButton3);
             this.Controls.Add(this.radioButton4);
             this.Controls.Add(this.radioButton5);
@@ -669,6 +632,8 @@ namespace myOpenGL
             this.Controls.Add(this.radioButton10);
             this.Controls.Add(this.radioButton11);
             this.Controls.Add(this.checkBox3);
+            this.Controls.Add(this.checkBox4);
+            this.Controls.Add(this.checkBox5);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -721,11 +686,6 @@ namespace myOpenGL
         private System.Windows.Forms.HScrollBar hScrollBar11;
         private System.Windows.Forms.HScrollBar hScrollBar12;
         private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.Timer timer2;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.RadioButton radioButton5;
@@ -736,6 +696,8 @@ namespace myOpenGL
         private System.Windows.Forms.RadioButton radioButton10;
         private System.Windows.Forms.RadioButton radioButton11;
         private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox checkBox5;
     }
 }
 

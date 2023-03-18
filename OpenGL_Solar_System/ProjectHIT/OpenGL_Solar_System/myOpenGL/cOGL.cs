@@ -18,8 +18,23 @@ namespace OpenGL
         public int intOptionM = 1;
         //flag for planet
         public int intOptionP = 1;
+     
         GLUquadric obj;
-       
+
+
+        public struct Position
+        {
+            public float x;
+            public float y;
+            public float z;
+
+            public Position(int x, int y, int z)
+            {
+                this.x = x;
+                this.y = y;
+                this.z = z;
+            }
+        }
 
         public cOGL(Control pb)
         {
@@ -47,8 +62,30 @@ namespace OpenGL
 
             isShadow = false;
             isReflection = false;
+            isLight = false;
+            isFloor = false;
+
+            angelOrbitMercury = r.Next(360);
+            speedOrbitMercury = (float)r.NextDouble() * 0.3f;
+            angelOrbitVenus = r.Next(360);
+            speedOrbitVenus = (float)r.NextDouble() * 0.3f;
+            angelOrbitEarth = r.Next(360);
+            speedOrbitEarth = (float)r.NextDouble() * 0.3f;
+            angelOrbitMars = r.Next(360);
+            speedOrbitMars = (float)r.NextDouble() * 0.3f;
+            angelOrbitJupiter = r.Next(360);
+            speedOrbitJupiter = (float)r.NextDouble() * 0.3f;
+            angelOrbitSaturn = r.Next(360);
+            speedOrbitSaturn = (float)r.NextDouble() * 0.3f;
+            angelOrbitUranus = r.Next(360);
+            speedOrbitUranus = (float)r.NextDouble() * 0.3f;
+            angelOrbitNeptun = r.Next(360);
+            speedOrbitNeptun = (float)r.NextDouble() * 0.3f;
+            angelOrbitPluton = r.Next(360);
+            speedOrbitPluton = (float)r.NextDouble() * 0.3f;
         }
 
+      
         ~cOGL()
         {
             GLU.gluDeleteQuadric(obj); //!!!
@@ -113,16 +150,16 @@ namespace OpenGL
             GL.glBegin(GL.GL_LINES);
             //x  RED
             GL.glColor3f(1.0f, 0.0f, 0.0f);
-            GL.glVertex3f(-3.0f, 0.0f, 0.0f);
-            GL.glVertex3f(3.0f, 0.0f, 0.0f);
+            GL.glVertex3f(-10.0f, 0.0f, 0.0f);
+            GL.glVertex3f(10.0f, 0.0f, 0.0f);
             //y  GREEN 
             GL.glColor3f(0.0f, 1.0f, 0.0f);
-            GL.glVertex3f(0.0f, -3.0f, 0.0f);
-            GL.glVertex3f(0.0f, 3.0f, 0.0f);
+            GL.glVertex3f(0.0f, -10.0f, 0.0f);
+            GL.glVertex3f(0.0f, 10.0f, 0.0f);
             //z  BLUE
             GL.glColor3f(0.0f, 0.0f, 1.0f);
-            GL.glVertex3f(0.0f, 0.0f, -3.0f);
-            GL.glVertex3f(0.0f, 0.0f, 3.0f);
+            GL.glVertex3f(0.0f, 0.0f, -10.0f);
+            GL.glVertex3f(0.0f, 0.0f, 10.0f);
             GL.glEnd();
         }
 
@@ -234,32 +271,24 @@ namespace OpenGL
             cubeXform[15] = dot - pos[3] * planeCoeff[3];
         }
 
+
         public bool isShadow = false;
         public bool isReflection = false;
-
+        public bool isLight = false;
+        public bool isFloor = false;
+        public float rotacion = 0;
+        public float rotacionP = 0;
+        public float objy = 0.0f;
+        
+        
         void DrawFigures_2()
         {
+
             int i;
             //!!!!!!!!!!!!!
             GL.glPushMatrix();
-           // GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, pos);
-            //!!!!!!!!!!!!!
-            //plane grids
-            //GL.glDisable(GL.GL_LIGHTING);
 
-            //GL.glEnable(GL.GL_LIGHTING);
-
-            //DrawFloor();
-            //GL.glColor4d(1.0, 1.0, 1.0, 0.1);
-
-            //GL.glBegin(GL.GL_QUADS);
-            //GL.glVertex3d(-20, -20, ground[0, 2] - 0.05);
-            //GL.glVertex3d(-20, 20, ground[0, 2] - 0.05);
-            //GL.glVertex3d(20, 20, ground[0, 2] - 0.05);
-            //GL.glVertex3d(20, -20, ground[0, 2] - 0.05);
-            //GL.glEnd();
-
-            // must be in scene to be reflected too
+          
             GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, pos);
 
             //Draw Light Source
@@ -272,14 +301,20 @@ namespace OpenGL
             //projection line from source to plane
             GL.glBegin(GL.GL_LINES);
             GL.glColor3d(0.5, 0.5, 0);
-            GL.glVertex3d(pos[0], pos[1], 0);
+            //GL.glVertex3d(pos[0], pos[1], 0);
+            //GL.glVertex3d(pos[0], pos[1], pos[2]);
+            GL.glVertex3d(pos[0], pos[1], ground[0, 2] - 0.01);
             GL.glVertex3d(pos[0], pos[1], pos[2]);
             GL.glEnd();
 
+           GL.glTranslatef(pos[0], pos[1], pos[2]);
+
             //main System draw
             GL.glEnable(GL.GL_LIGHTING);
+            
 
-            DrawPlanet(false);
+            // DrawPlanet(false);
+            DrawEachPlane(false);
 
 
             //end of regular show
@@ -301,128 +336,570 @@ namespace OpenGL
                 //!!!!!!!!!!!!    		
                 MakeShadowMatrix(ground);
                 GL.glMultMatrixf(cubeXform);
-                DrawPlanet(true);
+                //  DrawPlanet(true);
+                DrawEachPlane(true);
                 //!!!!!!!!!!!!!
                 GL.glPopMatrix();
                 //!!!!!!!!!!!!!
             }
            
         }
-        void DrawPlanet(bool isForShades)
+        void DrawEachPlane(Boolean isForShades)
         {
-           
 
-            if (isForShades == false)
-            {
-                GL.glEnable(GL.GL_TEXTURE_2D);
 
-                switch (intOptionP)
-                {
-                    case 1:
-                        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-                        break;
-                    case 2:
-                        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
-                        break;
-                    case 3:
-                        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
-                        break;
-                    case 4:
-                        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
-                        break;
-                    case 5:
-                        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
-                        break;
-                    case 6:
-                        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
-                        break;
-                    case 7:
-                        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
-                        break;
-                    case 8:
-                        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
-                        break;
-                    case 9:
-                        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
-                        break;
-                }
-                GLU.gluQuadricTexture(obj, 1);
-                GL.glColor3f(1, 1, 1);
-            }
-            else
-            {
-                GL.glDisable(GL.GL_TEXTURE_2D);
-                GL.glColor3d(0.5, 0.5, 0.5);
-            }
+            //  GL.glPushMatrix();
 
-       
+            //   GL.glRotated(intOptionB, 0, 0, 1); //rotate both
 
-            GL.glRotated(intOptionB, 0, 0, 1); //rotate both
-            //GL.glRotated(coinyRot, 0, 0, 1); //rotate both
+            // GL.glEnable(GL.GL_TEXTURE_2D);
 
-          
-            // GL.glTranslated(0, -0.5, 2);
-            GL.glTranslated(0, 0.2, 2);
-            //GL.glRotated(intOptionC, 1, 1, 1);
-            GL.glRotated(intOptionC, 0, 1, 0);
-            //GLUT.glutSolidCube(1);
-            GLU.gluSphere(obj, 2, 32, 32);
-            //GLUT.gluSphere(obj, 2.0, 50, 50);
-            //.glRotated(-intOptionC, 1, 1, 1);
-            GL.glRotated(-intOptionC, 0, 1, 0);
-            //GL.glTranslated(0, -0.5, -2);
-            GL.glTranslated(0, -0.2, -2);
-            GL.glRotated(intOptionB, 0, 0, 1); //rotate both
-            GL.glPopMatrix();
+            //drawmyplanet(2, 3.0f, new position(0 , 0 , 0), isforshades);// sun
+            //drawmyplanet(3, 0.5f, new position(5 , 0 , 0), isforshades); // mercury
+            //drawmyplanet(4, 0.7f, new position(11 , 0 , 0), isforshades);// venus
+            //drawmyplanet(0, 1.0f, new position(15 , 0 , 0), isforshades);// earth
+            //drawmyplanet(1, 0.5f, new position(15 , 0 , 0), isforshades);// moon
+            //drawmyplanet(5, 1.0f, new position(22 , 0 , 0), isforshades);// mars
+            //drawmyplanet(6, 1.5f, new position(28 , 0 , 0), isforshades);// jupiter
+            //drawmyplanet(7, 1.2f, new position(35 , 0 , 0), isforshades);// uranus
+            //drawmyplanet(8, 1.2f, new position(41 , 0 , 0), isforshades);// saturn
+            //drawmyplanet(9, 1.2f, new position(51 , 0 , 0), isforshades);// neptune
+
+
+            //DrawMyPlanet(2, 3.0f, 0, isForShades,0,0);// sun
+            //DrawMyPlanet(3, 0.5f, 5, isForShades,speedOrbitMercury,angelOrbitMercury); // mercury
+            //angelOrbitMercury += speedOrbitMercury;
+            //angelOrbitMercury += 0.6f;
+            //DrawMyPlanet(4, 0.7f, 11, isForShades,speedOrbitVenus,angelOrbitVenus);// venus
+            //angelOrbitVenus += speedOrbitVenus;
+            //angelOrbitVenus += 0.6f;
+            //DrawMyPlanet(0, 1.0f, 15, isForShades,speedOrbitEarth, angelOrbitEarth);// earth
+            //angelOrbitEarth += speedOrbitEarth;
+            //angelOrbitEarth += 0.6f;
+            //DrawMyPlanet(1, 0.5f, 15, isForShades, speedOrbitEarth, angelOrbitEarth);// moon
+            //angelOrbitEarth += speedOrbitEarth;
+            //angelOrbitEarth += 0.6f;
+            //DrawMyPlanet(5, 1.0f, 22, isForShades,speedOrbitMars, angelOrbitMars);// mars
+            //angelOrbitMars += speedOrbitMars;
+            //angelOrbitMars += 0.6f;
+            //DrawMyPlanet(6, 1.5f, 28, isForShades,speedOrbitJupiter, angelOrbitJupiter);// jupiter
+            //angelOrbitJupiter += speedOrbitJupiter;
+            //angelOrbitJupiter += 0.6f;
+            //DrawMyPlanet(7, 1.2f, 35, isForShades,speedOrbitUranus,angelOrbitUranus);// uranus
+            //angelOrbitUranus += speedOrbitUranus;
+            //angelOrbitUranus += 0.6f;
+            //DrawMyPlanet(8, 1.2f, 41, isForShades,speedOrbitSaturn,angelOrbitSaturn);// saturn
+            //angelOrbitSaturn += speedOrbitSaturn;
+            //angelOrbitSaturn += 0.6f;
+            //DrawMyPlanet(9, 1.2f, 51, isForShades,speedOrbitNeptun, angelOrbitNeptun);// neptune
+            //angelOrbitNeptun += speedOrbitNeptun;
+            //angelOrbitNeptun += 0.6f;
+
+            //   GL.glRotated(intOptionB, 0, 0, 1); //rotate both not neccessary
+
+            //GL.glPushMatrix();
+
+            //  GL.glRotated(intOptionB, 0, 0, 1); //rotate both
+
+            DrawMyPlanet(2, 3.0f, posXSun, posYSun,isForShades);// sun
+            DrawMyPlanet(3, 0.5f, posXMercury, posYMercury,isForShades); // mercury
+            //posXMercury += 0.3f;
+            //posYMercury += 0.2f;
+            DrawMyPlanet(4, 0.7f, posXVenus,posYVenus, isForShades);// venus
+            //posXVenus += 0.9f;
+            //posYVenus += 0.9f;
+            DrawMyPlanet(0, 1.0f, posXEarth,posYEarth, isForShades);// earth
+            //posXEarth += 0.3f;
+            //posYEarth += 0.2f;
+            DrawMyPlanet(1, 0.5f, posXMoon,posYMoon, isForShades);// moon
+            //posXMoon += 0.3f;
+            //posYMoon += 0.2f;
+            DrawMyPlanet(5, 1.0f, posXMars,posYMars, isForShades);// mars
+            //posXMars += 0.3f;
+            //posYMars += 0.2f;
+            DrawMyPlanet(6, 1.5f, posXJupiter,posYJupiter, isForShades);// jupiter
+            //posXJupiter += 0.3f;
+            //posYJupiter += 0.2f;
+            DrawMyPlanet(7, 1.2f, posXUranus,posYUranus, isForShades);// uranus
+            //posXUranus += 0.3f;
+            //posYUranus += 0.2f;
+            DrawMyPlanet(8, 1.2f, posXSaturn,posYSaturn, isForShades);// saturn
+            //posXSaturn += 0.3f;
+            //posYSaturn += 0.2f;
+            DrawMyPlanet(9, 1.2f, posXNeptun,posYNeptun, isForShades);// neptune
+            //posXNeptun += 0.3f;
+            //posYNeptun += 0.2f;
+            //3,
+            //5,
+            //11
+            //15
+            //15
+            //22
+            //28
+            //35
+            //41
+            //51
+            //DrawMyPlanet1(2, 3.0f, 3, isForShades);// sun
+            //DrawMyPlanet1(3, 0.5f, 5, isForShades); // mercury
+            //DrawMyPlanet1(4, 0.7f, 11, isForShades);// venus
+            //DrawMyPlanet1(1, 0.5f, 15, isForShades);// moon
+            //DrawMyPlanet1(0, 1.0f, 15, isForShades);// earth
+            //DrawMyPlanet1(5, 1.0f, 22, isForShades);// mars
+            //DrawMyPlanet1(6, 1.5f, 28, isForShades);// jupiter
+            //DrawMyPlanet1(7, 1.2f, 35, isForShades);// uranus
+            //DrawMyPlanet1(8, 1.2f, 41, isForShades);// saturn
+            //DrawMyPlanet1(9, 1.2f, 51, isForShades);// neptune
+
+            //   GL.glRotated(intOptionB, 0, 0, 1); //rotate both not neccessary
+            // GL.glPopMatrix();
+            GL.glDisable(GL.GL_TEXTURE_2D);  
+
+            //0 = "earth.bmp", 
+            //1 = "moon.bmp" ,
+            //2 = "sun.bmp" ,
+            //3 = "mercury.bmp",
+            //4 = "venus.bmp",
+            //5 = "mars.bmp" ,
+            //6 = "jupiter.bmp" ,
+            //7 = "uranus.bmp" ,
+            //8 = "saturn.bmp"
+            //9 = "neptune.bmp"
 
         }
 
-
-        void DrawMoon()
+        void DrawMyPlanet1(int texture, float radios, float x, Boolean isForShades)
         {
 
-            // must be in scene to be reflected too
-            GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, pos);
+            if (texture == 0) //earth
+            {
 
-            //Draw Light Source
-            GL.glDisable(GL.GL_LIGHTING);
-            GL.glTranslatef(pos[0], pos[1], pos[2]);
-            //Yellow Light source
-            GL.glColor3f(1, 1, 0);
-            GLUT.glutSolidSphere(0.05, 8, 8);
-            GL.glTranslatef(-pos[0], -pos[1], -pos[2]);
-            //projection line from source to plane
-            GL.glBegin(GL.GL_LINES);
-            GL.glColor3d(0.5, 0.5, 0);
-            GL.glVertex3d(pos[0], pos[1], 0);
-            GL.glVertex3d(pos[0], pos[1], pos[2]);
-            GL.glEnd();
+                if (isForShades == false)
+                {
+                    GL.glEnable(GL.GL_TEXTURE_2D);
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
+
+                GL.glPushMatrix();
+               // GL.glTranslatef(15, 0, 0);
+                GL.glRotated(270, 1, 0, 0);
+                angelOrbitEarth += speedOrbitEarth;
+                angelOrbitEarth += 0.6f;
+                GL.glRotated(angelOrbitEarth, 0, 0, 0);
+                GLU.gluSphere(obj, radios, 32, 32);
+                GL.glTranslatef(-15, 0, 0);
+                GL.glRotated(angelOrbitEarth, 1, 0, 0);
+                GL.glPopMatrix();
+                GL.glDisable(GL.GL_TEXTURE_2D);
+            }
+            if (texture == 1) //moon
+            {
+
+                if (isForShades == false)
+                {
+                    GL.glEnable(GL.GL_TEXTURE_2D);
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
+                GL.glPushMatrix();
+            //    GL.glTranslatef(x, 0, 0);
+                GL.glRotated(270, 1, 0, 0);
+                GL.glRotated(angelOrbitEarth, 0, 0, 0);
+                GLU.gluSphere(obj, radios, 32, 32);
+                GL.glTranslatef(-x, 0, 0);
+                GL.glRotated(angelOrbitEarth, 1, 0, 0);
+                GL.glPopMatrix();
+                GL.glDisable(GL.GL_TEXTURE_2D);
+            } 
+            if (texture == 3) //mercury
+            {
+
+                if (isForShades == false)
+                {
+                    GL.glEnable(GL.GL_TEXTURE_2D);
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
+                GL.glPushMatrix();
+             //   GL.glTranslatef(x, 0, 0);
+                GL.glRotated(270, 1, 0, 0);
+                angelOrbitMercury += speedOrbitMercury;
+                angelOrbitMercury += 0.6f;
+                GL.glRotated(angelOrbitMercury, 0, 0, 0);
+                GLU.gluSphere(obj, radios, 32, 32);
+                GL.glTranslatef(-x, 0, 0);
+                GL.glRotated(angelOrbitMercury, 1, 0, 0);
+                GL.glPopMatrix();
+                GL.glDisable(GL.GL_TEXTURE_2D);
+            }
+            if (texture == 4) //venus
+            {
+
+                if (isForShades == false)
+                {
+                    GL.glEnable(GL.GL_TEXTURE_2D);
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
+
+                GL.glPushMatrix();
+               // GL.glTranslatef(x, 0, 0);
+                GL.glRotated(270, 1, 0, 0);
+                angelOrbitVenus += speedOrbitVenus;
+                angelOrbitVenus += 0.6f;
+                GL.glRotated(angelOrbitVenus, 0, 0, 0);
+                GLU.gluSphere(obj, radios, 32, 32);
+                GL.glTranslatef(-x, 0, 0);
+                GL.glRotated(angelOrbitVenus, 1, 0, 0);
+                GL.glPopMatrix();
+                GL.glDisable(GL.GL_TEXTURE_2D);
+            }
+            if (texture == 5) //mars
+            {
+
+                if (isForShades == false)
+                {
+                    GL.glEnable(GL.GL_TEXTURE_2D);
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
+
+                GL.glPushMatrix();
+              //  GL.glTranslatef(x, 0, 0);
+                GL.glRotated(270, 1, 0, 0);
+                angelOrbitMars += speedOrbitMars;
+                angelOrbitMars += 0.6f;
+                GL.glRotated(angelOrbitMars, 0, 0, 0);
+                GLU.gluSphere(obj, radios, 32, 32);
+                GL.glTranslatef(-x, 0, 0);
+                GL.glRotated(angelOrbitMars, 1, 0, 0);
+                GL.glPopMatrix();
+                GL.glDisable(GL.GL_TEXTURE_2D);
+            }
+            if (texture == 6) //jupiter
+            {
+
+                if (isForShades == false)
+                {
+                    GL.glEnable(GL.GL_TEXTURE_2D);
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
+
+                GL.glPushMatrix();
+               // GL.glTranslatef(x, 0, 0);
+                GL.glRotated(270, 1, 0, 0);
+                angelOrbitJupiter += speedOrbitJupiter;
+                angelOrbitJupiter += 0.6f;
+                GL.glRotated(angelOrbitJupiter, 0, 0, 0);
+                GLU.gluSphere(obj, radios, 32, 32);
+                GL.glTranslatef(-x, 0, 0);
+                GL.glRotated(angelOrbitJupiter, 1, 0, 0);
+                GL.glPopMatrix();
+                GL.glDisable(GL.GL_TEXTURE_2D);
+            }
+            if (texture == 7) //uranus
+            {
+
+                if (isForShades == false)
+                {
+                    GL.glEnable(GL.GL_TEXTURE_2D);
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
+
+                GL.glPushMatrix();
+               // GL.glTranslatef(x, 0, 0);
+                GL.glRotated(270, 1, 0, 0);
+                angelOrbitUranus += speedOrbitUranus;
+                angelOrbitUranus += 0.6f;
+                GL.glRotated(angelOrbitUranus, 0, 0, 0);
+                GLU.gluSphere(obj, radios, 32, 32);
+                GL.glTranslatef(-x, 0, 0);
+                GL.glRotated(angelOrbitUranus, 1, 0, 0);
+                GL.glPopMatrix();
+                GL.glDisable(GL.GL_TEXTURE_2D);
+            }
+            if (texture == 8) //uranus
+            {
+
+                if (isForShades == false)
+                {
+                    GL.glEnable(GL.GL_TEXTURE_2D);
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
+
+                GL.glPushMatrix();
+                //GL.glTranslatef(x, 0, 0);
+                GL.glRotated(270, 1, 0, 0);
+                angelOrbitSaturn += speedOrbitSaturn;
+                angelOrbitSaturn += 0.6f;
+                GL.glRotated(angelOrbitSaturn, 0, 0, 0);
+                GLU.gluSphere(obj, radios, 32, 32);
+                GL.glTranslatef(-x, 0, 0);
+                GL.glRotated(angelOrbitSaturn, 1, 0, 0);
+                GL.glPopMatrix();
+                GL.glDisable(GL.GL_TEXTURE_2D);
+            }
+            if (texture == 9) //neptune
+            {
+
+                if (isForShades == false)
+                {
+                    GL.glEnable(GL.GL_TEXTURE_2D);
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
+
+                GL.glPushMatrix();
+              //  GL.glTranslatef(x, 0, 0);
+                GL.glRotated(270, 1, 0, 0);
+                angelOrbitNeptun += speedOrbitNeptun;
+                angelOrbitNeptun += 0.6f;
+                GL.glRotated(angelOrbitNeptun, 0, 0, 0);
+                GLU.gluSphere(obj, radios, 32, 32);
+                GL.glTranslatef(-x, 0, 0);
+                GL.glRotated(angelOrbitNeptun, 1, 0, 0);
+                GL.glPopMatrix();
+                GL.glDisable(GL.GL_TEXTURE_2D);
+            }
+            if(texture == 2) //sun
+            {
+
+                if (isLight)
+                {
+                    GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, pos);
+                    //Draw Light Source
+                    GL.glDisable(GL.GL_LIGHTING);
+                    //Yellow Light source
+                    GL.glColor3f(1, 1, 0);
+                }
+
+                if (isForShades == false)
+                {
+                    GL.glEnable(GL.GL_TEXTURE_2D);
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
+
+                GL.glTranslatef(3, 0.0f, 0.0f);
+                GL.glRotated(90, 0, 0, 1);
+                //   GL.glColor3f(1, 1, 1);
+                GLU.gluSphere(obj, radios, 32, 32);
+                GL.glTranslatef(-x, 0.0f, 0.0f);
+                rotacion += 0.05f;
+                GL.glRotatef(rotacion, 0, 1, 0);
+                GL.glTranslatef(-x, 0.0f, 0.0f);
+            }
+        }
+
+        void DrawMyPlanet(int texture, float radios, float posX,float posY,  Boolean isForShades)
+        {
+            if (texture != 2)
+            {
+                if (isForShades == false)
+                {
+                    GL.glEnable(GL.GL_TEXTURE_2D);
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
+
+                //GL.glTranslatef(posX, posY, 0);
+                GL.glRotated(270, 1, 0, 0);
+                GL.glRotated(intOptionB, 1, 0, 0);
+                GLU.gluSphere(obj, radios, 32, 32);
+                GL.glTranslatef(-posX, -posY, 0);
+                GL.glRotated(intOptionB, 1, 0, 0);
+            }
+            else
+            {
+
+                if (isLight)
+                {
+                    GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, pos);
+                    //Draw Light Source
+                    GL.glDisable(GL.GL_LIGHTING);
+                    //Yellow Light source
+                    GL.glColor3f(1, 1, 0);
+                }
+
+                if (isForShades == false)
+                {
+                    GL.glEnable(GL.GL_TEXTURE_2D);
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
 
 
-            //main System draw
-            GL.glEnable(GL.GL_LIGHTING);
+                GL.glTranslatef(posX, posY, 0.0f);
+                rotacion += 0.05f;
+                GL.glRotatef(rotacion, 0, 0, 1);
+                GLU.gluSphere(obj, radios, 32, 32);
+                GL.glTranslatef(-posX, -posY, 0.0f);
 
-            //GL.glEnable(GL.GL_TEXTURE_2D);
-            // GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-            // GLU.gluQuadricTexture(obj, 1);
+            }
+        }
 
-            GL.glRotated(intOptionB, 0, 0, 1); //rotate both
-            //GL.glRotated(coinyRot, 0, 0, 1); //rotate both
 
-            GL.glColor3f(1, 1, 1);
-            // GL.glTranslated(0, -0.5, 2);
-            GL.glTranslated(0, 0.2, 2);
-            //GL.glRotated(intOptionC, 1, 1, 1);
-            GL.glRotated(intOptionC, 0, 1, 0);
-            //GLUT.glutSolidCube(1);
-            GLU.gluSphere(obj, 2, 32, 32);
-            //GLUT.gluSphere(obj, 2.0, 50, 50);
-            //.glRotated(-intOptionC, 1, 1, 1);
-            GL.glRotated(-intOptionC, 0, 1, 0);
-            //GL.glTranslated(0, -0.5, -2);
-            GL.glTranslated(0, -0.2, -2);
-            GL.glRotated(intOptionB, 0, 0, 1); //rotate both
-            GL.glPopMatrix();
+        void DrawMyPlanet22(int texture, float radios, float x , Boolean isForShades , float speedOrbit , float angelOrbit)
+        {
+           
+            if (texture != 2)
+            {
+
+                if (isForShades == false)
+                {
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
+
+                //// GL.glTranslatef(x, 0, 0);
+                //GL.glTranslatef(x, 0, 0);
+                //GL.glRotated(270, 1, 0, 0);
+                //GL.glRotated(intOptionB, 1, 0, 0);
+                //GLU.gluSphere(obj, radios, 32, 32);
+                //GL.glTranslatef(-x, 0, 0);
+
+                // GL.glTranslatef(x, 0, 0);
+                //GL.glPushMatrix();
+                GL.glRotated(270, 1, 0, 0);
+                GLU.gluSphere(obj, radios, 32, 32);
+                //angelOrbit += speedOrbit;
+                //angelRotation += 0.6f;
+               // GL.glRotatef(intOptionB, 0, 1, 0);
+                GL.glRotatef(angelOrbitMercury, 0, 1, 0);
+              //  GL.glTranslatef(-posObj.x , -posObj.y , -posObj.z);
+                GL.glTranslatef(-x , -0 , -0);
+               // GL.glRotatef(intOptionB, 0, 1, 0);
+                GL.glRotatef(angelOrbitMercury, 0, 1, 0);
+               
+                //DrawOrbit(x);
+
+            }
+            else
+            {
+              
+                if (isLight)
+                {
+                    GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, pos);
+                    //Draw Light Source
+                    GL.glDisable(GL.GL_LIGHTING);
+                    //Yellow Light source
+                    GL.glColor3f(1, 1, 0);
+                }
+
+                if (isForShades == false)
+                {
+                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[texture]);
+                    GLU.gluQuadricTexture(obj, 1);
+                    GL.glColor3f(1, 1, 1);
+                }
+                else
+                {
+                    GL.glDisable(GL.GL_TEXTURE_2D);
+                    GL.glColor3f(0.5f, 0.5f, 0.5f);
+                }
+
+                //GL.glTranslatef(x, 0, 0);
+                //GL.glRotated(90, 1, 0, 0);
+                //  rotacion += 0.05f;
+                //GL.glTranslatef(x, 0, 0);
+                // GL.glTranslatef(x, 0, 0);
+
+                //   GL.glRotatef(rotacion, 0, 0, 1);
+                ////   GL.glColor3f(1, 1, 1);
+                //   GLU.gluSphere(obj, radios, 32, 32);
+                //   GL.glTranslatef(-x, 0.0f, 0.0f);
+
+               
+                GL.glRotated(90, 0, 0, 1);
+                //   GL.glColor3f(1, 1, 1);
+                GLU.gluSphere(obj, radios, 32, 32);
+                GL.glTranslatef(-x, 0.0f, 0.0f);
+                rotacion += 0.05f;
+                GL.glRotatef(rotacion, 0, 1, 0);
+              
+
+            }
         }
 
         void DrawFloor()
@@ -430,71 +907,26 @@ namespace OpenGL
             GL.glEnable(GL.GL_LIGHTING);
             GL.glBegin(GL.GL_QUADS);
             //!!! for blended REFLECTION 
-            GL.glColor4d(0, 0, 1, 0.1);
+            if(isFloor)
+            {
+                GL.glColor4d(0, 0, 1, 0.5);
+            }
+            else
+            {
+                GL.glColor4d(0, 0, 1, 0.1);
+            }
             GL.glVertex3d(-15, -15, 0);
             GL.glVertex3d(-15, 15, 0);
             GL.glVertex3d(15, 15, 0);
             GL.glVertex3d(15, -15, 0);
-            //GL.glVertex3d(-3, -3, 0);
-            //GL.glVertex3d(-3, 3, 0);
-            //GL.glVertex3d(3, 3, 0);
-            //GL.glVertex3d(3, -3, 0);
             GL.glEnd();
             GL.glDisable(GL.GL_TEXTURE_2D);
         }
-
+   
         void DrawStars()
         {
-            for (int i = 0; i < 1000; i++)
-            {
-                float x = (float)rand.NextDouble() * 200.0f - 100.0f;
-                float y = (float)rand.NextDouble() * 200.0f - 100.0f;
-                float z = (float)rand.NextDouble() * 200.0f - 100.0f;
-
-                GL.glVertex3f(x, y, z);
-
-                //Draw Light Source
-                GL.glDisable(GL.GL_LIGHTING);
-                GL.glTranslatef(x, y, z);
-                //Yellow Light source
-                GL.glColor3f(1, 1, 1);
-                GLUT.glutSolidSphere(0.05, 8, 8);
-                GL.glTranslatef(-x, -y, -z);
-                //projection line from source to plane
-                GL.glBegin(GL.GL_LINES);
-                GL.glColor3f(0.5f, 0.5f, 0.5f);
-                GL.glVertex3f(x, y, z);
-                GL.glVertex3f(x, y, z);
-                GL.glEnd();
-                GL.glDisable(GL.GL_TEXTURE_2D);
-            }
-        }
-
-
-        void DrawFigures()
-        {
             GL.glPushMatrix();
-
-            // must be in scene to be reflected too
-            GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, pos);
-
-            //Draw Light Source
-            GL.glDisable(GL.GL_LIGHTING);
-            GL.glTranslatef(pos[0], pos[1], pos[2]);
-            //Yellow Light source
-            GL.glColor3f(1, 1, 0);
-            GLUT.glutSolidSphere(0.05, 8, 8);
-            GL.glTranslatef(-pos[0], -pos[1], -pos[2]);
-            //projection line from source to plane
-            //GL.glBegin(GL.GL_LINES);
-            //GL.glColor3d(0.5, 0.5, 0);
-            //GL.glVertex3d(pos[0], pos[1], 0);
-            //GL.glVertex3d(pos[0], pos[1], pos[2]);
-            //GL.glEnd();
-
-            /***************************************************************************************/
-
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 1500; i++)
             {
                 float x = (float)rand.NextDouble() * 200.0f - 100.0f;
                 float y = (float)rand.NextDouble() * 200.0f - 100.0f;
@@ -517,100 +949,21 @@ namespace OpenGL
                 GL.glEnd();
                 GL.glDisable(GL.GL_TEXTURE_2D);
             }
-            /***************************************************************************************/
-            //main System draw
-            // GL.glEnable(GL.GL_LIGHTING);
-
-            // //GL.glEnable(GL.GL_TEXTURE_2D);
-            //// GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-            //// GLU.gluQuadricTexture(obj, 1);
-
-            // GL.glRotated(intOptionB, 0, 0, 1); //rotate both
-            // //GL.glRotated(coinyRot, 0, 0, 1); //rotate both
-
-            // GL.glColor3f(1, 1, 1);
-            // GL.glTranslated(0, -0.5, 1);
-            // //GL.glRotated(intOptionC, 1, 1, 1);
-            // GL.glRotated(intOptionC, 0, 1, 0);
-            // //GLUT.glutSolidCube(1);
-            // GLU.gluSphere(obj, 2, 32, 32);
-            // //GLUT.gluSphere(obj, 2.0, 50, 50);
-            // //.glRotated(-intOptionC, 1, 1, 1);
-            // GL.glRotated(-intOptionC, 0, 1, 0);
-            // GL.glTranslated(0, -0.5, -1);
-
-            // GL.glRotated(intOptionB, 0, 0, 1); //rotate both
-            // GL.glPopMatrix();
-
-            //  GL.glDisable(GL.GL_TEXTURE_2D);
-            //GL.glDisable(GL.GL_TEXTURE_2D);
-            // DrawAxes();
-
-
-            //GL.glColor3f(1, 1, 1);
-            //GL.glTranslated(0, -2, 0);
-            //GL.glRotated(coinyRot, 0, 1, 0);
-            //GLUT.gluDisk(obj, 0, 2, 30, 30);
-            //GL.glRotated(-coinyRot, 0, 1, 0);
-            //GL.glTranslated(0, -2, 0);
-            //GL.glColor3f(1, 1, 1);
-
-            // GL.glColor3f(1, 1, 0);
-            // GL.glTranslated(0, -0.5, 1);
-            // GL.glRotated(coinyRot, 1, 1, 1);
-            //// GLUT.gluDisk(obj, 0, 2, 30, 30);
-            // GLUT.gluCylinder(obj, 1.0, 1.0, 2.0, 50,10);
-            // GL.glRotated(-coinyRot, 1, 1, 1);
-            // GL.glTranslated(0, -0.5, -1);
-            // GL.glColor3f(1, 1, 1);
-
-
-            // GL.glTranslated(1, 2, 1.5);
-            // GL.glRotated(90, 1, 0, 0);
-            // GL.glColor3d(0, 1, 1);
-            // GL.glRotated(intOptionB, 1, 0, 0);
-            // GLUT.gluDisk(obj, 0, 2, 30, 30);
-            // GL.glRotated(-intOptionB, 1, 0, 0); //not neccessary
-            // GL.glRotated(-90, 1, 0, 0);     //not neccessary
-            // GL.glTranslated(-1, -2, -1.5);  //
-
-
-            //GL.glTranslated(1, 2, 1.5);
-            //GL.glRotated(90, 1, 0, 0);
-            //GL.glColor3d(0, 1, 1);
-            //GL.glRotated(intOptionB, 1, 0, 0);
-            //GLUT.glutSolidTeapot(1);
-            //GL.glRotated(-intOptionB, 1, 0, 0); //not neccessary
-            //GL.glRotated(-90, 1, 0, 0);     //not neccessary
-            //GL.glTranslated(-1, -2, -1.5);  //not neccessary 
-
-            // GL.glRotated(intOptionB, 0, 0, 1); //rotate both not neccessary
-            // GL.glRotated(coinyRot, 0, 0, 1);
-
-            //GL.glColor3f(1, 1, 1);
-            //GL.glTranslatef(0, 2, 0);
-            //GL.glRotatef(1, 0, 1, 0);
-            //GLU.gluDisk(obj, 0, 2, 30, 30);
-            //GL.glRotated(-1, 0, 1, 0); 
-            //GL.glTranslatef(0, -2 , 0);    
-            //GL.glColor3f(1, 1, 1);  
-
-            // GL.glPopMatrix();
-
-            //GL.glPushMatrix();
-            //GL.glRotated(coinyRot, 0, 0, 1); //rotate both
-
-            //GL.glColor3f(1.0f, 1.0f, 1.0f);
-            //GL.glTranslatef(0.0f, 0.0f, 1.0f);
-            //GL.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-            //GLUT.gluSphere(obj, 2.0, 50, 50);
-            ////  GL.glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-            //GL.glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-            //GL.glTranslatef(0.0f, 0.0f, -1.0f);
-            //GLUT.gluCylinder(obj, 1.0, 1.0, 4.0, 50, 50);
-
-
+            GL.glPopMatrix();
         }
+
+        public void DrawOrbit(float x)
+        {
+            GL.glBegin(GL.GL_LINE_STRIP);
+
+            for (int i = 0; i < 361; i++)
+            {
+                GL.glVertex3f(x * (float)Math.Sin(i * Math.PI / 180), 0, x * (float)Math.Cos(i * Math.PI / 180));
+            }
+            GL.glEnd();
+        }
+
+
 
         public float[] pos = new float[4];
         public int intOptionB = 1;
@@ -628,7 +981,67 @@ namespace OpenGL
         public Boolean intOptionMi = false;
         double[] AccumulatedRotationsTraslations = new double[16];
 
-        
+
+        public float angelRotation;
+        public float angelOrbit;
+
+        //speed
+        public float speedOrbitMercury;
+        public float speedOrbitVenus;
+        public float speedOrbitEarth;
+        public float speedOrbitMars;
+        public float speedOrbitJupiter;
+        public float speedOrbitSaturn;
+        public float speedOrbitUranus;
+        public float speedOrbitNeptun;
+        public float speedOrbitPluton;
+        //angel
+        public float angelOrbitMercury;
+        public float angelOrbitVenus;
+        public float angelOrbitEarth;
+        public float angelOrbitMars;
+        public float angelOrbitJupiter;
+        public float angelOrbitSaturn;
+        public float angelOrbitUranus;
+        public float angelOrbitNeptun;
+        public float angelOrbitPluton;
+       
+        static Random r = new Random();
+        //3,
+        //5,
+        //11
+        //15
+        //15
+        //22
+        //28
+        //35
+        //41
+        //51
+        //X
+        public float posXSun = 3;
+        public float posXMercury = 5.0f;
+        public float posXVenus = 11;
+        public float posXEarth = 15;
+        public float posXMoon = 15;
+        public float posXMars = 22;
+        public float posXJupiter = 28;
+        public float posXSaturn = 35;
+        public float posXUranus = 41;
+        public float posXNeptun = 51;
+        //public float posXPluton;
+        //Y
+        public float posYSun = 0;
+        public float posYMercury = 0.0f;
+        public float posYVenus = 0;
+        public float posYEarth = 0;
+        public float posYMoon = 0;
+        public float posYMars = 0;
+        public float posYJupiter = 0;
+        public float posYSaturn = 0;
+        public float posYUranus = 0;
+        public float posYNeptun = 0;
+      //  public float posYPluton = 0;
+
 
         public void Draw()
         {
@@ -733,8 +1146,10 @@ namespace OpenGL
             //REFLECTION//DrawAxes();
 
             //REFLECTION b    	
-            intOptionB += 10; //for rotation
+           // intOptionB += 10; //for rotation
             intOptionC += 2; //for rotation
+            intOptionB += 1;
+            
 
             // without REFLECTION was only DrawAll(); 
             // now
@@ -773,107 +1188,11 @@ namespace OpenGL
             GL.glScalef(1, 1, -1); //swap on Z axis
             GL.glEnable(GL.GL_CULL_FACE);
             GL.glCullFace(GL.GL_BACK);//back and forth
-                                      // DrawFigures();
-            DrawStars();
-            //GL.glEnable(GL.GL_TEXTURE_2D);
-
-            //switch (intOptionP)
-            //{
-            //    case 1:
-            //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-            //        break;
-            //    case 2:
-            //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
-            //        break;
-            //    case 3:
-            //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
-            //        break;
-            //    case 4:
-            //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
-            //        break;
-            //    case 5:
-            //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
-            //        break;
-            //    case 6:
-            //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
-            //        break;
-            //    case 7:
-            //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
-            //        break;
-            //    case 8:
-            //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
-            //        break;
-            //    case 9:
-            //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
-            //        break;
-
-            //}
-
-            // GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-
-            //GLU.gluQuadricTexture(obj, 1);
-
-            //DrawFigures();
-            /*********/
-            //DrawMoon();
-            /*********/
             DrawFigures_2();
-
-            // GLU.gluSphere(obj, 2, 32, 32);
-
-            GL.glDisable(GL.GL_TEXTURE_2D);
-            // DrawMoon();
+            DrawStars();
             GL.glCullFace(GL.GL_FRONT);//back and forth
-                                       //DrawFigures();
-            DrawStars();
-            GL.glEnable(GL.GL_TEXTURE_2D);
-
-            //GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-
-            switch (intOptionP)
-            {
-                case 1:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-                    break;
-                case 2:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
-                    break;
-                case 3:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
-                    break;
-                case 4:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
-                    break;
-                case 5:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
-                    break;
-                case 6:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
-                    break;
-                case 7:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
-                    break;
-                case 8:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
-                    break;
-                case 9:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
-                    break;
-
-            }
-
-            GLU.gluQuadricTexture(obj, 1);
-
-            //DrawFigures();
-            /*********/
-            //DrawMoon();
-            /*********/
             DrawFigures_2();
-
-            // GLU.gluSphere(obj, 2, 32, 32);
-
-            GL.glDisable(GL.GL_TEXTURE_2D);
-            //  DrawMoon();
+            DrawStars();
             GL.glDisable(GL.GL_CULL_FACE);
             GL.glPopMatrix();
 
@@ -882,458 +1201,28 @@ namespace OpenGL
             //( half-transparent ( see its color's alpha byte)))
             // in order to see reflected objects 
             GL.glDepthMask((byte)GL.GL_FALSE);
+           // DrawFloor();
 
-            DrawFloor();
+
+            if (isReflection)
+            {
+                DrawFloor();
+            }
 
             GL.glDepthMask((byte)GL.GL_TRUE);
             // Disable GL.GL_STENCIL_TEST to show All, else it will be cut on GL.GL_STENCIL
             GL.glDisable(GL.GL_STENCIL_TEST);
 
-            /****/
-            GL.glEnable(GL.GL_TEXTURE_2D);
-
-            //GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-
-            switch (intOptionP)
-            {
-                case 1:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-                    break;
-                case 2:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
-                    break;
-                case 3:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
-                    break;
-                case 4:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
-                    break;
-                case 5:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
-                    break;
-                case 6:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
-                    break;
-                case 7:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
-                    break;
-                case 8:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
-                    break;
-                case 9:
-                    GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
-                    break;
-
-            }
-
-            GLU.gluQuadricTexture(obj, 1);
-
-            //DrawFigures();
-            /*********/
-            //DrawMoon();
-            /*********/
             DrawFigures_2();
-
-            // GLU.gluSphere(obj, 2, 32, 32);
-
-            GL.glDisable(GL.GL_TEXTURE_2D);
-
             DrawStars();
-            //DrawFigures();
+            DrawAxes();
             //REFLECTION e    
 
-            //DrawAxes();
             GL.glFlush();
 
             WGL.wglSwapBuffers(m_uint_DC);
 
-            //switch (intOptionM)
-            //{
-            //    case 1:
-            //        GL.glEnable(GL.GL_BLEND);
-            //        GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-
-
-            //        //only floor, draw only to STENCIL buffer
-            //        GL.glEnable(GL.GL_STENCIL_TEST);
-            //        GL.glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_REPLACE);
-            //        GL.glStencilFunc(GL.GL_ALWAYS, 1, 0xFFFFFFFF); // draw floor always
-            //        GL.glColorMask((byte)GL.GL_FALSE, (byte)GL.GL_FALSE, (byte)GL.GL_FALSE, (byte)GL.GL_FALSE);
-            //        GL.glDisable(GL.GL_DEPTH_TEST);
-
-            //        if (isReflection)
-            //        {
-            //            DrawFloor();
-            //        }
-
-
-            //        // DrawFloor();
-
-            //        // restore regular settings
-            //        GL.glColorMask((byte)GL.GL_TRUE, (byte)GL.GL_TRUE, (byte)GL.GL_TRUE, (byte)GL.GL_TRUE);
-            //        GL.glEnable(GL.GL_DEPTH_TEST);
-
-            //        // reflection is drawn only where STENCIL buffer value equal to 1
-            //        GL.glStencilFunc(GL.GL_EQUAL, 1, 0xFFFFFFFF);
-            //        GL.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
-
-            //        GL.glEnable(GL.GL_STENCIL_TEST);
-
-            //        // draw reflected scene
-            //        GL.glPushMatrix();
-            //        GL.glScalef(1, 1, -1); //swap on Z axis
-            //        GL.glEnable(GL.GL_CULL_FACE);
-            //        GL.glCullFace(GL.GL_BACK);//back and forth
-            //       // DrawFigures();
-            //        DrawStars();
-            //        //GL.glEnable(GL.GL_TEXTURE_2D);
-
-            //        //switch (intOptionP)
-            //        //{
-            //        //    case 1:
-            //        //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-            //        //        break;
-            //        //    case 2:
-            //        //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
-            //        //        break;
-            //        //    case 3:
-            //        //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
-            //        //        break;
-            //        //    case 4:
-            //        //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
-            //        //        break;
-            //        //    case 5:
-            //        //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
-            //        //        break;
-            //        //    case 6:
-            //        //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
-            //        //        break;
-            //        //    case 7:
-            //        //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
-            //        //        break;
-            //        //    case 8:
-            //        //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
-            //        //        break;
-            //        //    case 9:
-            //        //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
-            //        //        break;
-
-            //        //}
-
-            //        // GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-
-            //        //GLU.gluQuadricTexture(obj, 1);
-
-            //        //DrawFigures();
-            //        /*********/
-            //        //DrawMoon();
-            //        /*********/
-            //        DrawFigures_2();
-
-            //        // GLU.gluSphere(obj, 2, 32, 32);
-
-            //        GL.glDisable(GL.GL_TEXTURE_2D);
-            //        // DrawMoon();
-            //        GL.glCullFace(GL.GL_FRONT);//back and forth
-            //        //DrawFigures();
-            //        DrawStars();
-            //        GL.glEnable(GL.GL_TEXTURE_2D);
-
-            //        //GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-
-            //        switch (intOptionP)
-            //        {
-            //            case 1:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-            //                break;
-            //            case 2:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
-            //                break;
-            //            case 3:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
-            //                break;
-            //            case 4:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
-            //                break;
-            //            case 5:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
-            //                break;
-            //            case 6:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
-            //                break;
-            //            case 7:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
-            //                break;
-            //            case 8:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
-            //                break;
-            //            case 9:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
-            //                break;
-
-            //        }
-
-            //        GLU.gluQuadricTexture(obj, 1);
-
-            //        //DrawFigures();
-            //        /*********/
-            //        //DrawMoon();
-            //        /*********/
-            //        DrawFigures_2();
-
-            //        // GLU.gluSphere(obj, 2, 32, 32);
-
-            //        GL.glDisable(GL.GL_TEXTURE_2D);
-            //        //  DrawMoon();
-            //        GL.glDisable(GL.GL_CULL_FACE);
-            //        GL.glPopMatrix();
-
-
-            //        // really draw floor 
-            //        //( half-transparent ( see its color's alpha byte)))
-            //        // in order to see reflected objects 
-            //        GL.glDepthMask((byte)GL.GL_FALSE);
-
-            //        DrawFloor();
-
-            //        GL.glDepthMask((byte)GL.GL_TRUE);
-            //        // Disable GL.GL_STENCIL_TEST to show All, else it will be cut on GL.GL_STENCIL
-            //        GL.glDisable(GL.GL_STENCIL_TEST);
-
-            //        /****/
-            //        GL.glEnable(GL.GL_TEXTURE_2D);
-
-            //        //GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-
-            //        switch (intOptionP)
-            //        {
-            //            case 1:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-            //                break;
-            //            case 2:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
-            //                break;
-            //            case 3:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
-            //                break;
-            //            case 4:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
-            //                break;
-            //            case 5:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
-            //                break;
-            //            case 6:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
-            //                break;
-            //            case 7:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
-            //                break;
-            //            case 8:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
-            //                break;
-            //            case 9:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
-            //                break;
-
-            //        }
-
-            //        GLU.gluQuadricTexture(obj, 1);
-
-            //        //DrawFigures();
-            //        /*********/
-            //        //DrawMoon();
-            //        /*********/
-            //        DrawFigures_2();
-
-            //        // GLU.gluSphere(obj, 2, 32, 32);
-
-            //        GL.glDisable(GL.GL_TEXTURE_2D);
-
-            //        DrawStars();
-            //        //DrawFigures();
-            //        //REFLECTION e    
-
-            //        //DrawAxes();
-            //        GL.glFlush();
-
-            //        WGL.wglSwapBuffers(m_uint_DC);
-            //        break;
-            //    case 2:
-            //        GL.glEnable(GL.GL_BLEND);
-            //        GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-
-
-            //        //only floor, draw only to STENCIL buffer
-            //        GL.glEnable(GL.GL_STENCIL_TEST);
-            //        GL.glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_REPLACE);
-            //        GL.glStencilFunc(GL.GL_ALWAYS, 1, 0xFFFFFFFF); // draw floor always
-            //        GL.glColorMask((byte)GL.GL_FALSE, (byte)GL.GL_FALSE, (byte)GL.GL_FALSE, (byte)GL.GL_FALSE);
-            //        GL.glDisable(GL.GL_DEPTH_TEST);
-
-            //        //DrawFloor();
-
-
-            //        // DrawFloor();
-
-            //        // restore regular settings
-            //        GL.glColorMask((byte)GL.GL_TRUE, (byte)GL.GL_TRUE, (byte)GL.GL_TRUE, (byte)GL.GL_TRUE);
-            //        GL.glEnable(GL.GL_DEPTH_TEST);
-
-            //        // reflection is drawn only where STENCIL buffer value equal to 1
-            //        GL.glStencilFunc(GL.GL_EQUAL, 1, 0xFFFFFFFF);
-            //        GL.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
-
-            //        GL.glEnable(GL.GL_STENCIL_TEST);
-
-            //        // draw reflected scene
-            //        GL.glPushMatrix();
-            //        GL.glScalef(1, 1, -1); //swap on Z axis
-            //        GL.glEnable(GL.GL_CULL_FACE);
-            //        GL.glCullFace(GL.GL_BACK);//back and forth
-            //        //DrawFigures();
-            //        DrawStars();
-            //        GL.glEnable(GL.GL_TEXTURE_2D);
-
-            //        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-
-            //        GLU.gluQuadricTexture(obj, 1);
-
-            //        //DrawFigures();
-            //        /*********/
-            //        //DrawMoon();
-            //        /*********/
-            //        DrawFigures_2();
-
-            //        // GLU.gluSphere(obj, 2, 32, 32);
-
-            //        GL.glDisable(GL.GL_TEXTURE_2D);
-            //        // DrawMoon();
-            //        GL.glCullFace(GL.GL_FRONT);//back and forth
-            //       // DrawFigures();
-            //        DrawStars();
-            //        GL.glEnable(GL.GL_TEXTURE_2D);
-
-            //        //GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-
-            //        switch (intOptionP)
-            //        {
-            //            case 1:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-            //                break;
-            //            case 2:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
-            //                break;
-            //            case 3:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
-            //                break;
-            //            case 4:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
-            //                break;
-            //            case 5:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
-            //                break;
-            //            case 6:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
-            //                break;
-            //            case 7:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
-            //                break;
-            //            case 8:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
-            //                break;
-            //            case 9:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
-            //                break;
-
-            //        }
-
-            //        GLU.gluQuadricTexture(obj, 1);
-
-            //        //DrawFigures();
-            //        /*********/
-            //        //DrawMoon();
-            //        /*********/
-            //        DrawFigures_2();
-
-            //        // GLU.gluSphere(obj, 2, 32, 32);
-
-            //        GL.glDisable(GL.GL_TEXTURE_2D);
-            //        //  DrawMoon();
-            //        GL.glDisable(GL.GL_CULL_FACE);
-            //        GL.glPopMatrix();
-
-
-            //        // really draw floor 
-            //        //( half-transparent ( see its color's alpha byte)))
-            //        // in order to see reflected objects 
-            //        GL.glDepthMask((byte)GL.GL_FALSE);
-
-            //        //DrawFloor();
-
-            //        GL.glDepthMask((byte)GL.GL_TRUE);
-            //        // Disable GL.GL_STENCIL_TEST to show All, else it will be cut on GL.GL_STENCIL
-            //        GL.glDisable(GL.GL_STENCIL_TEST);
-
-            //        /****/
-            //        GL.glEnable(GL.GL_TEXTURE_2D);
-
-            //        //GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-
-            //        switch (intOptionP)
-            //        {
-            //            case 1:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-            //                break;
-            //            case 2:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[1]);
-            //                break;
-            //            case 3:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[2]);
-            //                break;
-            //            case 4:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[3]);
-            //                break;
-            //            case 5:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[4]);
-            //                break;
-            //            case 6:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[5]);
-            //                break;
-            //            case 7:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[6]);
-            //                break;
-            //            case 8:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[7]);
-            //                break;
-            //            case 9:
-            //                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[8]);
-            //                break;
-
-            //        }
-
-            //        GLU.gluQuadricTexture(obj, 1);
-
-            //        //DrawFigures();
-            //        /*********/
-            //        //DrawMoon();
-            //        /*********/
-            //        DrawFigures_2();
-
-            //        // GLU.gluSphere(obj, 2, 32, 32);
-
-            //        GL.glDisable(GL.GL_TEXTURE_2D);
-
-            //        DrawStars();
-            //        //DrawFigures();
-            //        //REFLECTION e    
-
-            //        //DrawAxes();
-            //        GL.glFlush();
-
-            //        WGL.wglSwapBuffers(m_uint_DC);
-            //        break;
-            //}
-
+           
         }
 
         protected virtual void InitializeGL()
@@ -1444,17 +1333,17 @@ namespace OpenGL
 
         }
         //! TEXTURE b
-        public uint[] Textures = new uint[9];
+        public uint[] Textures = new uint[10];
        
         void GenerateTextures()
         {
             
-            GL.glGenTextures(9, Textures);
+            GL.glGenTextures(10, Textures);
 
             string[] imagesName = { "earth.bmp", "moon.bmp" ,"sun.bmp" , "mercury.bmp", "venus.bmp" 
-                    , "mars.bmp" , "jupiter.bmp" , "uranus.bmp" , "saturn.bmp"};
+                    , "mars.bmp" , "jupiter.bmp" , "uranus.bmp" , "saturn.bmp" , "neptune.bmp"};
 
-            for (int i = 0; i <  9 ; i++)
+            for (int i = 0; i <  10 ; i++)
             {
                 Bitmap image = new Bitmap(imagesName[i]);
                 image.RotateFlip(RotateFlipType.RotateNoneFlipY); //Y axis in Windows is directed downwards, while in OpenGL-upwards
